@@ -1,0 +1,55 @@
+@import "../../../app.component.scss";
+
+.drag-area {
+    @include box(100%, 100%);
+    display: flex;
+    position: relative;
+    align-items: center; // vertical alignment
+    justify-content: center; // horizontal alignment
+    flex-direction: column;
+    background-color: var(--custom-surface-background);
+    @include widget();
+
+    .preview-image {
+        position: absolute;
+        z-index: 400;
+        @include box(100%, 100%);
+        object-fit: cover;
+        pointer-events: none; 
+    }
+
+    header {
+        text-align: center;
+        color: grayscale(176);
+        font-weight: 500;
+        @include fluid-type($min-font-size: 16px, $max-font-size: 24px);
+
+        ion-icon {
+            @include fluid-type($min-font-size: 36px, $max-font-size: 100px);
+        }
+    }
+
+    ion-button {
+        --box-shadow:none;
+        text-transform: none;
+    }
+
+    #submit-button {
+        white-space: normal;
+        margin-top: 24px;
+        max-width: 80%;
+        
+    }
+
+    &.active {
+        border-color: map-get($map: $colors, $key: primary);
+        border-style: solid;
+        border-width: 2px;
+
+        header {
+            color: map-get($map: $colors, $key: primary);
+        }
+    }
+}
+
+

@@ -1,0 +1,101 @@
+@import "../../../app.component.scss";
+
+:host {
+
+    .title {
+        padding: 8px 0 0 0;
+        font-size: 1.4em;
+    }
+    .subtitle {
+        color: var(--custom-text-color);
+        font-size: 0.8em;
+        font-weight: 400;
+        padding-bottom: 8px;
+        padding-left: 2px;
+    }
+
+    #ea1-content {
+        padding: 24px;
+        display: flex;
+        flex-direction: row;
+        @include box(100%, 100%);
+        background-color: var(--custom-screen-background);
+
+        h2 {
+            padding-left: 5px;
+            color: var(--custom-title-color);
+        }
+    }
+
+    #files-section {
+        flex: 0 0 20vw;
+        display: flex;
+        flex-direction: column;
+        
+
+        #drag-and-drop-section {
+            flex: 0 0 20vw;
+        }
+
+        #files-browser-section {
+            flex-grow: 1;
+            @include widget();
+            overflow-y: auto;
+        }
+    }
+
+    #classification-section {
+        margin-left: 25px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+
+        .widget  {
+            @include widget();
+            flex-grow: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            padding: 16px;
+            position: relative;
+
+            .loader {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                ion-spinner {
+                    color: map-get($map: $colors, $key: primary);
+                    width: 64px !important;
+                    height: 64px !important; 
+                }
+
+                .label {
+                    margin-top: 12px;
+                    color: var(--custom-text-color);
+                    font-size: 16px;
+                    display: block;
+                }
+            }
+
+            #image-preview-section {
+                flex: 0 0 calc(20vw - 16px);
+                overflow: hidden;
+                margin-right: 24px;
+                max-height: calc(20vw - 16px);
+                background-color: var(--custom-screen-background);
+                border-radius: 16px;
+            }
+    
+            #diagram-section {
+                margin-top: 25px;
+                display: flex row;
+                flex: 1;
+                max-height: 20vw;
+            }
+        }
+
+       
+    }
+}

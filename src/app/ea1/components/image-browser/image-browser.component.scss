@@ -1,0 +1,31 @@
+@import "../../../app.component.scss";
+
+.scrolling-wrapper {
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: space-between;
+    justify-content: space-between;
+    @include box(100%, 100%);
+    padding: 16px;
+}
+
+.repo-image {
+    @include box(calc(50% - 8px), 208px);
+     object-fit: cover;
+     display: inline-block; 
+     border-radius: 16px;
+     margin-bottom: 24px;
+
+     &:first-of-type {
+         margin-left: 0px;
+     }
+
+     &.selected {
+        @include widget();
+         border-width: 3px;
+         border-color: map-get($map: $colors, $key: primary);
+         padding: 4px;
+     }
+}
