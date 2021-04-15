@@ -31,8 +31,13 @@ export class FileUploaderComponent implements OnInit {
     });
   }
 
-  onChooseFile() {
+  onPresentFilePicker() {
     this.fileInput.nativeElement.click();
+  }
+
+  onFilesSelected(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.handleDrop(target.files);
   }
 
   handleDrop(fileList: FileList) {

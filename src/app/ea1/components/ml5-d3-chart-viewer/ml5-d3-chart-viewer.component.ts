@@ -22,7 +22,7 @@ export class Ml5D3ChartViewerComponent implements OnInit {
 
   data: ML5ClassificationResult[] = []
 
-  margin = { top: 48, right: 48, bottom: 48, left: 48 };
+  margin = { top: 48, right: 12, bottom: 48, left: 48 };
 
   constructor(private ml5Service: Ml5ClassificationService) {
     

@@ -8,7 +8,7 @@ import { Ml5ClassificationService } from 'src/app/ea1/services/ml5-classificatio
 })
 export class Ea1Page implements OnInit {
 
-  private isML5ServiceReady: Boolean = false
+  public isML5ServiceReady: Boolean = false
 
   constructor(private ml5Service: Ml5ClassificationService) { 
 

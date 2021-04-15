@@ -8,7 +8,7 @@ import { ImageRepositoryService, ImageSource } from '../../services/image-reposi
 })
 export class ImagePreviewComponent implements OnInit {
 
-  private selectedImage: ImageSource = null
+  public selectedImage: ImageSource = null
 
   constructor(private imageRepo: ImageRepositoryService) {
 
