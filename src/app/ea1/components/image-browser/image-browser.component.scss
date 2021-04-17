@@ -29,3 +29,48 @@
          padding: 4px;
      }
 }
+
+
+:host {
+    @media only screen and (max-width: 1439px) {
+        .repo-image {
+            height: 112px;
+        }
+    }
+
+    @media only screen and (min-width: 1440px) {
+        .repo-image {
+            height: 104px;
+        }
+    }
+
+    @media only screen and (min-width: 1600px) {
+        .repo-image {
+            height: 120px;
+        }
+    }
+
+    @media only screen and (min-width: 1920px) {
+        .repo-image {
+            height: 136px;
+        }
+    }
+
+    @media only screen and (min-width: 2560px) {
+        .repo-image {
+            height: 152px;
+        }
+    }
+
+    @media only screen and (min-width: 3200px) {
+        .repo-image {
+            height: 176px;
+        }
+    }
+
+    @media only screen and (min-width: 3840px) {
+        .repo-image {
+            height: 200px;
+        }
+    }
+}

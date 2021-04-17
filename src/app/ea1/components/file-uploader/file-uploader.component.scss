@@ -25,7 +25,7 @@
         @include fluid-type($min-font-size: 16px, $max-font-size: 24px);
 
         ion-icon {
-            @include fluid-type($min-font-size: 36px, $max-font-size: 100px);
+            @include fluid-type($min-font-size: 36px, $max-font-size: 80px);
         }
     }
 
@@ -36,9 +36,8 @@
 
     #submit-button {
         white-space: normal;
-        margin-top: 24px;
+        margin-top: 10px;
         max-width: 80%;
-        
     }
 
     &.active {
@@ -51,5 +50,3 @@
         }
     }
 }
-
-

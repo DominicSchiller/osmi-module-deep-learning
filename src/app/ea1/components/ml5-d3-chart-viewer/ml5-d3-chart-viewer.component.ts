@@ -76,7 +76,9 @@ export class Ml5D3ChartViewerComponent implements OnInit {
      g.append('g')
        .attr('class', 'axis axis--x')
        .attr('transform', 'translate(0,' + contentHeight + ')')
-       .call(d3.axisBottom(x));
+       .call(d3.axisBottom(x))
+       .selectAll(".tick text")
+       .call(this.wrap, x.bandwidth())
  
      g.append('g')
        .attr('class', 'axis axis--y')
@@ -108,7 +110,32 @@ export class Ml5D3ChartViewerComponent implements OnInit {
         .attr("y", function(d) { return y(d.confidence) - 10; })
         .text(function(d) { return Number((d.confidence*100).toFixed(2)) + ' %' })
         .attr('fill', 'black');
+
    }
+
+   wrap(text, width) {
+    text.each(function() {
+      var text = d3.select(this),
+          words = text.text().split(/\s+/).reverse(),
+          word,
+          line = [],
+          lineNumber = 0,
+          lineHeight = 1.1, // ems
+          y = text.attr("y"),
+          dy = parseFloat(text.attr("dy")),
+          tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em")
+      while (word = words.pop()) {
+        line.push(word)
+        tspan.text(line.join(" "))
+        if (tspan.node().getComputedTextLength() > width) {
+          line.pop()
+          tspan.text(line.join(" "))
+          line = [word]
+          tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", `${++lineNumber * lineHeight + dy}em`).text(word)
+        }
+      }
+    })
+  }
  
    onResize($event) {
      this.createChart();

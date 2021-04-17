@@ -7,6 +7,6 @@
     <ion-icon name="cloud-upload"></ion-icon>
     <div>Drag & Drop <br />or</div>
   </header>
-  <ion-button id="submit-button" color="primary" type="submit" (click)="onPresentFilePicker()">Browse image files</ion-button>
+  <ion-button id="submit-button" color="primary" type="submit" (click)="onPresentFilePicker()">Browse files</ion-button>
   <input type="file" accept="image/*" (change)="onFilesSelected($event)" #fileInput multiple hidden />
 </div>

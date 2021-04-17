@@ -45,7 +45,6 @@ export class Ml5ClassificationService {
    }
 
    async onMobileNetModelReady() {
-     console.info('MobileNet model is ready');
      this.isMobileNetReady.next(true);
      if (this.selectedImage != null) {
        this.predictSelectedImage();
@@ -56,7 +55,6 @@ export class Ml5ClassificationService {
      if (error) {
       console.error(error);
      } else {
-      console.info(results);
       this.classificationResults.next(results);
      }
    }

@@ -41,7 +41,6 @@ export class ImageRepositoryService {
   }
 
   async setSelected(image: ImageSource) {
-    console.warn("hmmmmmaaaa");
     this.selectedImage.next(image);
   }
 
