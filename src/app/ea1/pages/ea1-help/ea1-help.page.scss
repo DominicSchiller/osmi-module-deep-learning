@@ -1,0 +1,37 @@
+:host {
+    #ea1-help-content {
+        padding: 8px 16px 32px 16px;
+
+        ol, ul {
+            li {
+                &::marker {
+                    font-weight: 600;
+                }
+                span {
+                    &.headline {
+                        font-weight: 600;
+                        display: block;
+                    }
+
+                    &.italic {
+                        font-style: italic;
+                        display: inline;
+                    }
+                }
+            }
+        }
+
+        figure {
+            img {
+                border: 1px solid var(--custom-surface-border);
+            }
+            figcaption {
+                span {
+                    font-weight: 600;
+                    padding-right: 8px;
+                }
+            }
+        }
+        
+    }
+}

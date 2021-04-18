@@ -1,0 +1,76 @@
+@import "../../../app.component.scss";
+
+.scrolling-wrapper {
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: space-between;
+    justify-content: space-between;
+    @include box(100%, 100%);
+    padding: 16px;
+}
+
+.repo-image {
+    @include box(calc(50% - 8px), 208px);
+     object-fit: cover;
+     display: inline-block; 
+     border-radius: 16px;
+     margin-bottom: 24px;
+
+     &:first-of-type {
+         margin-left: 0px;
+     }
+
+     &.selected {
+        @include widget();
+         border-width: 3px;
+         border-color: map-get($map: $colors, $key: primary);
+         padding: 4px;
+     }
+}
+
+
+:host {
+    @media only screen and (max-width: 1439px) {
+        .repo-image {
+            height: 112px;
+        }
+    }
+
+    @media only screen and (min-width: 1440px) {
+        .repo-image {
+            height: 104px;
+        }
+    }
+
+    @media only screen and (min-width: 1600px) {
+        .repo-image {
+            height: 120px;
+        }
+    }
+
+    @media only screen and (min-width: 1920px) {
+        .repo-image {
+            height: 136px;
+        }
+    }
+
+    @media only screen and (min-width: 2560px) {
+        .repo-image {
+            height: 152px;
+        }
+    }
+
+    @media only screen and (min-width: 3200px) {
+        .repo-image {
+            height: 176px;
+        }
+    }
+
+    @media only screen and (min-width: 3840px) {
+        .repo-image {
+            height: 200px;
+        }
+    }
+}

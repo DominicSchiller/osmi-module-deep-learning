@@ -1,0 +1,30 @@
+@import "../../../app.component.scss";
+
+:host {
+    position: relative;
+
+
+    .preview-image {
+        @include box(100%, 100%);
+        object-fit: contain;
+        border-radius: 16px;
+    }
+    .placeholder-wrapper {
+        @include box(100%, 100%);
+        position: relative;
+
+        .preview-imag-placeholder-text {
+            position: absolute;
+            width: calc(100% - 32px);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 16px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 500;
+            color: grayscale(178);
+        }
+    }
+    
+}

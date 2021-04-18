@@ -1,0 +1,150 @@
+@import "../../../app.component.scss";
+
+:host {
+
+    ion-toolbar {
+        padding: 4px 12px 4px 0px;
+    }
+
+    ion-fab-button {
+        --box-shadow:none;
+    }
+
+    .title {
+        padding: 8px 0 0 0;
+        font-size: 1.4em;
+    }
+    .subtitle {
+        color: var(--custom-text-color);
+        font-size: 0.8em;
+        font-weight: 400;
+        padding-bottom: 8px;
+        padding-left: 2px;
+    }
+
+    #ea1-content {
+        padding: 24px;
+        display: flex;
+        flex-direction: row;
+        @include box(100%, 100%);
+        background-color: var(--custom-screen-background);
+
+        h2 {
+            padding-left: 5px;
+            color: var(--custom-title-color);
+        }
+    }
+
+    #files-section {
+        flex: 0 0 20vw;
+        display: flex;
+        flex-direction: column;
+        
+
+        #drag-and-drop-section {
+            flex: 0 0 32vh;
+        }
+
+        #files-browser-section {
+            flex-grow: 1;
+            @include widget();
+            overflow-y: auto;
+        }
+    }
+
+    #classification-section {
+        margin-left: 25px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+
+        .widget  {
+            @include widget();
+            flex-grow: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            position: relative;
+
+            .loader {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                ion-spinner {
+                    color: map-get($map: $colors, $key: primary);
+                    width: 64px !important;
+                    height: 64px !important; 
+                }
+
+                .label {
+                    margin-top: 12px;
+                    color: var(--custom-text-color);
+                    font-size: 16px;
+                    display: block;
+                }
+            }
+
+            #image-preview-section {
+                flex: 0 0 calc(32vh - 16px);
+                max-height: calc(32vh - 16px);
+                overflow: hidden;
+                margin-right: 24px;
+                background-color: var(--custom-screen-background);
+                border-radius: 16px;
+            }
+    
+            #diagram-section {
+                flex: 1;
+                margin-top: 25px;
+                max-height: none;
+                flex-grow: 1;
+            }
+        }
+    }
+}
+
+:host {
+    @media only screen and (max-width: 1439px) {
+        #files-section {
+            flex: 0 0 28vw;
+
+            #drag-and-drop-section {
+                flex: 0 0 calc(30vh + 16px);
+            }
+        }
+
+        #classification-section {
+            #image-preview-section {
+                flex: 0 0 calc(30vh - 16px);
+                max-height: calc(30vh - 16px);
+            }
+        }
+    }
+
+    @media only screen and (min-width: 1440px) {
+        #files-section {
+            flex: 0 0 24vw;
+        }
+    }
+
+    @media only screen and (min-width: 1600px) {
+        #files-section {
+            flex: 0 0 24vw;
+        }
+    }
+
+    @media only screen and (min-width: 2560px) {
+        #files-section {
+            flex: 0 0 20vw;
+        }
+    }
+
+    @media only screen and (min-width: 3200px) {
+        #files-section {
+            flex: 0 0 20vw;
+        }
+    }
+}

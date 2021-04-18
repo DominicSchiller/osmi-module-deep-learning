@@ -1,0 +1,3 @@
+<div class="scrolling-wrapper" #list>
+    <img class="repo-image" *ngFor="let image of allImages" src="{{image}}" (click)="onSelectImage(image)" [ngClass]="image == selectedImage ? 'selected' : '' "/>
+</div>

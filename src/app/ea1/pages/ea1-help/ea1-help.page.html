@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Hilfe und Hinweise</ion-title>
+    <ion-button (click)="closeModal()" fill="clear" slot="secondary" >
+      <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="ea1-help-content">
+    <h2>User Interface</h2>
+    Das User Interface der EA1 gliedert sich in die folgenden Bereiche (vgl. Abbildung 1):
+    <ol>
+      <li>
+        <span class="headline">Bilder Upload</span>
+        Hier können via "Drag & Drop" oder per Click auf den Button »Dateien auswählen« Bilder in die »Bilder Bibliothek« hochgeladen werden.
+        <br />
+        Dabei wird das hochgeladene Bild auch gleich an den sog. »Classification Service« zur Klassifgizierung übergeben <sup>(*)</sup>. Die Ergebnisse werden anschließend im Bereich »Bilder Klassifizierung« angezeigt (<span class="italic">siehe (3)</span>).
+        <br />
+        <sup>(*)</sup> Für den Fall, dass mehrere Bilder ausgewählt und hochgeladen wurden, wird das zuletzt geladene Bild klassifiziert.
+        <br /><br />
+      </li>
+      <li>
+        <span class="headline">Bilder Bibliothek</span>
+        In diesem Bereich werden alle zur Klassifizierung verfügbaren Bilder aufgelistet. Standardmäßig sind 12 Beispiel-Bilder beigelegt. Neu hochgeladene Bilder werden an den Anfang dcer Liste hinzugefügt.
+        Per Click auf eines der Bilder-Thumbnails wird dieses ausgewählt und an den »Classification Service« zur Klassifgizierung übergeben. Die Ergebnisse werden anschließend im Bereich »Bilder Klassifizierung« angezeigt (<span class="italic">siehe (3)</span>).
+        <br /><br />
+      </li>
+      <li>
+        <span class="headline">Bilder Klassifikation</span>
+        In diesem Bereich werden die Ergebnisse einer ausgeführten Bilder-Klassifikation dargestellt. 
+        Der Bereich <span class="italic">3a</span> zeigt hierbei das aus der <span class="italic">»Bilder Bibliothek«</span> ausgewählte und klassifizierte Bild im Vollformat an.
+        <br />
+        Der Bereich <span class="italic">3b</span> stellt hingegen die Ergebnisse der Klassifikation in Form eines Balkendiagramms präsentiert. Dabei werden die berechneten »Klassen/Kategorien« (<span class="italic">hier:</span> x-Achse) mit ihren »Treffer-Wahrscheinlichkeiten« (<span class="italic">hier:</span>  y-Achse) abgebildet.
+        <br /><br />
+      </li>
+    </ol> 
+    <figure>
+      <img src="assets/images/ea1/help/ui-overview.png" />
+      <figcaption><span>Abb.1:</span>Aufbau des EA1 User Interfaces</figcaption>
+    </figure>
+    <br /><br />
+    <h2>Bilder Klassifikation</h2>
+    Die Klassifikation der Bilder erfolgt mit Hilfe der »<a href="https://learn.ml5js.org/#/">ml5.js</a>« Bibliothek und unter Verwendung der vortrainierten »MobileNet« Models. Die Klassifikation der Bilder varriert von den Wahrscheinlichkeiten her sehr stark. 
+    <br />
+    So wird das beigefügt Bild eines Fahhrads z.B. nur zu 31,9% als Fahrrad erkannt. Ähnlich verhält es sich mit dem Bild der Katze, bei dem die Wahrscheinlichkeiten stark im unteren Prozentbereich (15,29% - 9,96%) und die Abstande der berechneten Klassen nicht besonders groß sind.<br />
+    <br />
+    Bild-Motive wie z.B. der beigefügte Hase, der Tiger, oder auch der Labrador liefern hingegen für die wahrscheinlichste Klasse hohe Wahrscheinlichkeiten (98,47% beim Hasen, 83,94% beim Tiger und 79,81% bei dem Labrador).<br />
+    Gründe für gute bzw. weniger gute Klassifizierungsergebnisse können z.B. die Qualität der Bilder sein (unscharfe Bilder, Motiv-Ausschnitt, wenig gut erkennbare / extrahierbare Strukturen und Details bw. Features bzgl. Ausleuchtung etc.).
+    <br />Aber auch die vortrainierten Modelle haben einen großen Einfluss. Denn wenn das Modell noch nie mit einem entsprechenden Motiv trainiert wurde, dann wird das Modell dieses Motiv auch nicht erkennen können, und wird falsche Ergebnisse liefern. Das Trainingsdatenset spielt bspw. von MobileNet spielt daher ebenfalls eine essentielle Rolle.
+  </div>
+</ion-content>
