@@ -13,7 +13,7 @@ const routes: Routes = [
     loadChildren: () => import('./ea1/pages/ea1.module').then( m => m.Ea1PageModule)
   },
   {
-    path: 'ea1-help',
+    path: 'ea1/help',
     loadChildren: () => import('./ea1/pages/ea1-help/ea1-help.module').then( m => m.Ea1HelpPageModule)
   },
 ];
