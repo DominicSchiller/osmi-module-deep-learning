@@ -30,15 +30,30 @@
 
 .bar {
     fill: rgba(247, 0, 78, 0.4);
-    stroke-width: 2;
-    stroke: rgb(247, 0, 78);
-    font-size: 16px;
+    stroke-width: 1;
+    // stroke: rgb(247, 0, 78);
+    // font-size: 16px;
 }
 
 .bar:hover {
     fill: rgba(111, 237, 219, 0.4);
-    stroke-width: 2;
-    stroke: rgb(111, 237, 219);
+    // stroke-width: 1;
+    // stroke: rgb(111, 237, 219);
 }
 
 .axis { font: 14px sans-serif; }
+
+
+.ea1-help-modal {
+    --width: 64vw;
+    --height: 80vh;
+    --border-radius: 0;
+}
+
+@media only screen and (min-width: 3200px) {
+    .ea1-help-modal {
+        --width: 40vw;
+        --height: 80vh;
+        --border-radius: 0;
+    }
+}

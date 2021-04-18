@@ -1,5 +1,5 @@
-import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
+import { IonList } from '@ionic/angular';
 import { ImageRepositoryService, ImageSource } from 'src/app/ea1/services/image-repository/image-repository.service';
 
 @Component({
@@ -9,6 +9,7 @@ import { ImageRepositoryService, ImageSource } from 'src/app/ea1/services/image-
 })
 export class ImageBrowserComponent implements OnInit {
 
+  list: IonList
   selectedImage: ImageSource = null
   allImages: ImageSource[] = []
   

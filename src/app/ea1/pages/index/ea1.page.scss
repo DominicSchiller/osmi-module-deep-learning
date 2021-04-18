@@ -3,7 +3,11 @@
 :host {
 
     ion-toolbar {
-        padding: 12px 0px;
+        padding: 4px 12px 4px 0px;
+    }
+
+    ion-fab-button {
+        --box-shadow:none;
     }
 
     .title {
@@ -93,8 +97,8 @@
             }
     
             #diagram-section {
+                flex: 1;
                 margin-top: 25px;
-                display: flex row;
                 max-height: none;
                 flex-grow: 1;
             }

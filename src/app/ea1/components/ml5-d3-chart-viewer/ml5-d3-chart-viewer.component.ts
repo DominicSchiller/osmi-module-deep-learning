@@ -98,7 +98,7 @@ export class Ml5D3ChartViewerComponent implements OnInit {
        .attr('x', d => x(d.label))
        .attr('y', d => y(d.confidence) - 1)
        .attr('width', x.bandwidth())
-       .attr("rx", 6)
+       .attr("rx", 4)
        .attr('height', d => contentHeight - y(d.confidence));
 
       g.selectAll("text.bar")

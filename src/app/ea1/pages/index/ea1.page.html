@@ -1,9 +1,17 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>
-      <div class="title">EA #1: Image Classification with ML5</div>
-      <div class="subtitle">by Dominic Schiller - dominic.schiller@th-brandenburg.de</div>
+      <div class="title">EA #1: Image Classification mit ML5</div>
+      <div class="subtitle">von Dominic Schiller</div>
     </ion-title>
+    <ion-fab vertical="center" horizontal="end" slot="secondary">
+      <ion-fab-button (click)="showHelpModal()" size="small">
+        <ion-icon name="information-sharp"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
   </ion-toolbar>
 </ion-header>
 
@@ -11,21 +19,21 @@
   <div id="ea1-content">
 
     <div id="files-section">
-      <h2>Image Upload</h2>
+      <h2>Bilder Upload</h2>
       <div id="drag-and-drop-section">
         <app-file-uploader></app-file-uploader>
       </div>
-      <h2>Images Browser</h2>
+      <h2>Bilder Bibliothek</h2>
       <div id="files-browser-section">
         <app-image-browser></app-image-browser>
       </div>
     </div>
     <div id="classification-section">
-      <h2>Image Classification</h2>
+      <h2>Bilder Klassifikation</h2>
       <div class="widget">
         <div class="loader" *ngIf="!isML5ServiceReady">
           <ion-spinner name="crescent" class="test"></ion-spinner>
-          <div class="label">Loading pre-trained MobileNet model</div>
+          <div class="label">Lade »pre-trained« MobileNet Model</div>
         </div>
         <div id="image-preview-section"  *ngIf="isML5ServiceReady">
           <app-image-preview></app-image-preview>

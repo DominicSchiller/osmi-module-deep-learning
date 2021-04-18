@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { Ea1PageRoutingModule } from './ea1-routing.module';
+import { Ea1PageRoutingModule } from './index/ea1-routing.module';
 
-import { Ea1Page } from './ea1.page';
+import { Ea1Page } from './index/ea1.page';
 import { EA1ComponentsModule } from 'src/app/ea1/components/ea1-components.module';
 
 @NgModule({
