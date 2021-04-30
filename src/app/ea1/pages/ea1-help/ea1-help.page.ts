@@ -6,7 +6,7 @@ import { ModalController, NavController } from '@ionic/angular';
   templateUrl: './ea1-help.page.html',
   styleUrls: ['./ea1-help.page.scss'],
 })
-export class Ea1HelpPage implements OnInit {
+export class EA1HelpPage implements OnInit {
 
   constructor(private modalCtrl: ModalController) { }
 

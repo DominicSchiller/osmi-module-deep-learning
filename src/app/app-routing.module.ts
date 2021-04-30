@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'ea1',
+    redirectTo: 'ea2',
     pathMatch: 'full'
   },
   {
     path: 'ea1',
-    loadChildren: () => import('./ea1/pages/ea1.module').then( m => m.Ea1PageModule)
+    loadChildren: () => import('./ea1/ea1.module').then( m => m.EA1Module)
   },
   {
-    path: 'ea1/help',
-    loadChildren: () => import('./ea1/pages/ea1-help/ea1-help.module').then( m => m.Ea1HelpPageModule)
+    path: 'ea2',
+    loadChildren: () => import('./ea2/ea2.module').then( m => m.EA2Module)
   },
 ];
 

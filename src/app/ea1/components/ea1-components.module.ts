@@ -5,7 +5,6 @@ import { FileDropDirective } from '../directives/file-drop.directive';
 import { ImageBrowserComponent } from './image-browser/image-browser.component';
 import { ImagePreviewComponent } from './image-preview/image-preview.component';
 import { Ml5D3ChartViewerComponent } from './ml5-d3-chart-viewer/ml5-d3-chart-viewer.component';
-import { IonicModule } from '@ionic/angular';
 
 const COMPONENTS = [
     FileUploaderComponent,

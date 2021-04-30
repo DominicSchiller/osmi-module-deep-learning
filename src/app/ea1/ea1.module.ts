@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { Ea1PageRoutingModule } from './index/ea1-routing.module';
+import { Ea1PageRoutingModule } from './ea1-routing.module';
 
-import { Ea1Page } from './index/ea1.page';
+import { EA1Page } from './pages/index/ea1.page';
 import { EA1ComponentsModule } from 'src/app/ea1/components/ea1-components.module';
 
 @NgModule({
@@ -17,6 +17,6 @@ import { EA1ComponentsModule } from 'src/app/ea1/components/ea1-components.modul
     Ea1PageRoutingModule,
     EA1ComponentsModule
   ],
-  declarations: [Ea1Page]
+  declarations: [EA1Page]
 })
-export class Ea1PageModule {}
+export class EA1Module {}

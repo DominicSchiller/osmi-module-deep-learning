@@ -1,0 +1,50 @@
+@import "../../../app.component.scss";
+
+:host {
+
+    ion-toolbar {
+        padding: 4px 12px 4px 0px;
+    }
+
+    ion-fab-button {
+        --box-shadow:none;
+    }
+
+    .title {
+        padding: 8px 0 0 0;
+        font-size: 1.4em;
+    }
+    .subtitle {
+        color: var(--custom-text-color);
+        font-size: 0.8em;
+        font-weight: 400;
+        padding-bottom: 8px;
+        padding-left: 2px;
+    }
+
+    #ea2-content {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        @include box(100%, 100%);
+        background-color: var(--custom-screen-background);
+
+        h2 {
+            padding-left: 5px;
+            color: var(--custom-title-color);
+        }
+
+        #charts-section {
+            // flex-grow: 1;
+            flex: 0 0 calc(32vh - 16px);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+    
+            .chart-wrapper {
+            //    flex: 1;
+               width: calc(50% - 16px);
+            }
+        }
+    }
+}

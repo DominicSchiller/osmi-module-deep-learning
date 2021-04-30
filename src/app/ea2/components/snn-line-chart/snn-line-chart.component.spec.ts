@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { EA1HelpPage } from './ea1-help.page';
+import { SnnLineChartComponent } from './snn-line-chart.component';
 
-describe('Ea1HelpPage', () => {
-  let component: EA1HelpPage;
-  let fixture: ComponentFixture<EA1HelpPage>;
+describe('SnnLineChartComponent', () => {
+  let component: SnnLineChartComponent;
+  let fixture: ComponentFixture<SnnLineChartComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ EA1HelpPage ],
+      declarations: [ SnnLineChartComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EA1HelpPage);
+    fixture = TestBed.createComponent(SnnLineChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

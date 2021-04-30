@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -7,7 +7,8 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-import { EA1ComponentsModule } from './ea1/components/ea1-components.module';
+import { EA2Module } from './ea2/ea2.module';
+import { EA1Module } from './ea1/ea1.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,13 +16,15 @@ import { EA1ComponentsModule } from './ea1/components/ea1-components.module';
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
+    EA1Module,
+    EA2Module,
     AppRoutingModule,
-    EA1ComponentsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
+  
 })
 export class AppModule {}

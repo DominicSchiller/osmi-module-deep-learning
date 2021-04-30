@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { Ea1HelpPageRoutingModule } from './ea1-help-routing.module';
 
-import { Ea1HelpPage } from './ea1-help.page';
+import { EA1HelpPage } from './ea1-help.page';
 
 @NgModule({
   imports: [
@@ -15,6 +15,6 @@ import { Ea1HelpPage } from './ea1-help.page';
     IonicModule,
     Ea1HelpPageRoutingModule
   ],
-  declarations: [Ea1HelpPage]
+  declarations: [EA1HelpPage]
 })
 export class Ea1HelpPageModule {}

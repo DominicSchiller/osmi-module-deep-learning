@@ -23,7 +23,8 @@ export class FileUploaderComponent implements OnInit {
 
   selectedImage: ImageSource = null
 
-  constructor(private imageRepo: ImageRepositoryService, private toastController: ToastController) { }
+  constructor(private imageRepo: ImageRepositoryService, private toastController: ToastController) { 
+  }
 
   ngOnInit() {
     this.imageRepo.getSelectedImageObservable().subscribe(selectedImage => {
