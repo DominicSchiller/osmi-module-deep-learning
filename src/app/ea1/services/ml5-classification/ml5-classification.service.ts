@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import ml5 from 'ml5';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ML5ClassificationResult } from '../../model/ML5ClassificationResult';
 import { ImageRepositoryService, ImageSource } from '../image-repository/image-repository.service';
+
+declare var ml5;
 
 @Injectable({
   providedIn: 'root'

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Ml5ClassificationService } from 'src/app/ea1/services/ml5-classification/ml5-classification.service';
 import { EA1HelpPage } from '../ea1-help/ea1-help.page';
@@ -20,7 +20,7 @@ export class EA1Page implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
   async showHelpModal() {

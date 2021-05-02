@@ -65,14 +65,15 @@ export class SimpleNeuron {
 
         // membrane potential starting at resting potential
         this.v = tf.variable(tf.fill([this.n], SimpleNeuron.RestingPotential), null, 'v');
-        this.v.print();
+
         // membrane recovery starting at b * c
         this.u = tf.variable(tf.tensor1d([this.b * this.c]), null, 'u');
-        this.u.print();
 
         this.i = tf.variable(tf.zeros([this.n]), null, 'i')
         this.dt = tf.variable(tf.scalar(0), null, 'dt')
+    }
 
+    initResponse() {
         const responseOps = this.getResponseOps()
         this.potential = responseOps.vOp
         this.recovery = responseOps.uOp
@@ -122,7 +123,6 @@ export class SimpleNeuron {
     }
 
     getUpdateOps(hasFiredOp, vResetOp, uResetOp, iOp) {
-       
 
         return tf.tidy(() => {
              // evaluate membrane potential increment for the considered time interval

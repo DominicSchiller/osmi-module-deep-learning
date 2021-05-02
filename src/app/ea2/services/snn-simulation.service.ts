@@ -24,6 +24,8 @@ export class SNNSimulationService {
   }
    
   constructor() {
+    tf.setBackend('webgl')
+
     if (typeof Worker !== 'undefined') {
       this.worker = new Worker('../worker/snn-simple-simulation.worker', { type: 'module' });
     } else {

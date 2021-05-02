@@ -134,8 +134,32 @@ export class SnnLineChartComponent implements OnInit {
        .x(d => that.x(d.x))
        .y(d => that.y(d.y)))
        .attr("fill", "none")
-       .attr("stroke", "steelblue")
-       .attr("stroke-width", 2.5)
+       .attr("stroke", "LightSalmon")
+       .attr("stroke-width", 2)
+
+
+    // MEAN line
+    // Create a update selection: bind to the new data
+    var u2 = this.svg.selectAll(".meanTest")
+      .data([this._data], d => d.x);
+
+    const filteredData = this._data.filter(d => d.x >= 200 && d.x <= 700)
+    const ymean = d3.mean(filteredData, d => d.y); 
+
+   // Updata the line
+   u2
+   .enter()
+   .append("path")
+   .attr("class","meanTest")
+   .merge(u2)
+   .transition()
+   .duration(duration)
+   .attr("d", d3.line()
+     .x(d => that.x(d.x))
+     .y(d => that.y(ymean)))
+     .attr("fill", "none")
+     .attr("stroke", "MidnightBlue")
+     .attr("stroke-width", 3)
    }
 
    /**

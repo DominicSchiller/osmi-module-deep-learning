@@ -20,9 +20,9 @@
     "@angular/platform-browser-dynamic": "~11.2.0",
     "@angular/router": "~11.2.0",
     "@ionic/angular": "^5.5.2",
-    "@tensorflow/tfjs": "^1.7.4",
+    "@tensorflow/tfjs": "^3.6.0",
+    "angular-load": "^0.5.0",
     "d3": "^6.6.2",
-    "ml5": "^0.6.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
