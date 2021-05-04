@@ -13,22 +13,22 @@ export class SimpleNeuron {
      * the time scale of the recovery variable u
      * - note: slower values result in slower recovery. Typical value is 0.02
      */
-    private a: number
+    private a: tf.Variable
     /**
      * The sensitivity of the recovery variable u to the sub-threshold fluctuations of the membran potential v.
      * - note: greater values couple v and u more strongly resulting in possible subthreshold oscillations and low-threshold spiking dynamics. Typical value is b=0.2
      */
-    private b: number
+    private b: tf.Variable
     /**
      * The after-spike value of the membrane potential v caused by the fast high-threshold K+ conducttances.
      * - note: A typical value is -65 mV.
      */
-    private c: number
+    private c: tf.Tensor
     /**
      * The after-spike reset of the recovery variable u caused by slow high-threshold Na+ and K+ conductances
      * - note: A typical value is 2.
      */
-    private d: number
+    private d: tf.Variable
 
     private v: tf.Variable
     private u: tf.Variable
@@ -56,18 +56,23 @@ export class SimpleNeuron {
      * Constrcutor
      * @param n The number of neurons
      */
-    constructor(n: number, a: number = 0.02, b: number = 0.2, c: number = -65.0, d: number = 2.0) {
+    constructor(
+        n: number, 
+        a?: tf.Tensor, 
+        b?: tf.Tensor, 
+        c?: tf.Tensor , 
+        d?: tf.Tensor) {
         this.n = n;
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
+        this.a = tf.variable(a ?? tf.fill([n], 0.02))
+        this.b = tf.variable(b ?? tf.fill([n], 0.2))
+        this.c = tf.variable(c ?? tf.fill([n], -65.0))
+        this.d = tf.variable(d ?? tf.fill([n], 8.0))
 
         // membrane potential starting at resting potential
         this.v = tf.variable(tf.fill([this.n], SimpleNeuron.RestingPotential), null, 'v');
 
         // membrane recovery starting at b * c
-        this.u = tf.variable(tf.tensor1d([this.b * this.c]), null, 'u');
+        this.u = tf.variable(this.b.mul(this.c), null, 'u');
 
         this.i = tf.variable(tf.zeros([this.n]), null, 'i')
         this.dt = tf.variable(tf.scalar(0), null, 'dt')
@@ -109,7 +114,7 @@ export class SimpleNeuron {
 
             // neurons that have spiked must be reset, others simply evolve from their initial value
             // membrane potential is reset to c
-            const vResetOp = tf.where(hasFiredOp, tf.fill([this.n], this.c), this.v)
+            const vResetOp = tf.where(hasFiredOp, this.c, this.v)
 
             // membrane recovery is increased by d
             const uResetOp = tf.where(hasFiredOp, tf.add(this.u, this.d), this.u)

@@ -1,7 +1,8 @@
 export enum SimulationCommand {
     Start,
     Stop,
-    DataUpdate
+    NeuronSpikesUpdate,
+    GlobalSpikesUpdate
 }
 
 export class SimulationWorkerMessage {

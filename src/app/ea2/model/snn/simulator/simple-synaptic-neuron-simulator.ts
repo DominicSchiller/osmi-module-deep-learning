@@ -1,24 +1,16 @@
 /// <reference lib="webworker" />
 import * as tf from '@tensorflow/tfjs';
 
-import { SimpleNeuron } from "../simple-neuron"
-import { SimpleSynapticNeuron } from '../simple-synaptic-neuron';
+import { SimpleNeuron } from "../neurons/simple-neuron"
+import { SimpleSynapticNeuron } from '../neurons/simple-synaptic-neuron';
 import { SimulationCommand, SimulationWorkerMessage } from "../simulation-command"
-import { IInputCurrent, IPotential, ISNNSImulationResult } from "../snn-types"
+import { InputCurrent, Potential } from "../snn-types"
+import { BaseSimulator } from './base-simulator';
 
-export class SimpleSynapticNeuronSimulator {
+export class SimpleSynapticNeuronSimulator extends BaseSimulator {
 
-    // Array of input current values
-    protected I_in: IInputCurrent[] =  []
-    // Array of evaluated membrane potential values
-    protected v_out: IPotential[] = []
-    // Duration of the simulation in ms
-    protected T:number = 1000
-    // Duration of each time step in ms
-    protected dt:number = 0.5
     // Synapses firing rate
     private frate:number = 0.002
-
     // The number of neurons
     private n = 1
     // The number of synapses
@@ -28,10 +20,11 @@ export class SimpleSynapticNeuronSimulator {
     private neurons: SimpleSynapticNeuron = new SimpleSynapticNeuron(this.n, this.m)
 
     constructor() {
-        tf.setBackend('cpu');
+      super()
+      tf.setBackend('webgl');
     }
     
-    public simulate(): ISNNSImulationResult {
+    public simulate() {
   
       console.log("Start Simulation ...");
       // run the simulation at each time step
@@ -57,16 +50,17 @@ export class SimpleSynapticNeuronSimulator {
 
         // getb response
         const responseOps = this.neurons.getResponseOps()
-  
-        this.I_in.push({t: t, i: this.neurons.input.dataSync()[0]})
-        this.v_out.push({t: t, v: responseOps.vOp.dataSync()[0]})
+
+        this.I_in.push({t: t, i: this.neurons.input.arraySync() as number[]})
+        this.v_out.push(responseOps.vOp.reshape([this.n]))
   
         // send data update each 100ms
         if (step % 100 == 0) {
-          postMessage(new SimulationWorkerMessage(SimulationCommand.DataUpdate, { inputCurrents: this.I_in, potentials: this.v_out }));
+          this.postNeuronSpikesUpdate()
         }
+
       }
-      console.log("Sumulation finished");
-      return { inputCurrents: this.I_in, potentials: this.v_out }
+      console.log("Simulation finished");
+      this.postNeuronSpikesUpdate()
     }
   }

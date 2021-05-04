@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as tf from '@tensorflow/tfjs';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SimulationCommand, SimulationWorkerMessage } from '../model/snn/simulation-command';
-import { IInputCurrent, IPotential, ISNNSImulationResult } from '../model/snn/snn-types';
+import { InputCurrent, Potential, INeuronSpikesUpdate, GlobalSpikesInfo, IGlobalSpikesUpdate } from '../model/snn/snn-types';
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +12,20 @@ export class SNNSimulationService {
 
    worker: Worker
 
-   private _inputCurrents = new BehaviorSubject<IInputCurrent[]>([])
-   private _potentials = new BehaviorSubject<IPotential[]>([])
+   private _inputCurrents = new BehaviorSubject<InputCurrent[]>([])
+   private _potentials = new BehaviorSubject<Potential[]>([])
+   private _globalSpikesInfo = new BehaviorSubject<IGlobalSpikesUpdate>(null)
 
-   public get potentials(): Observable<IPotential[]> {
+   public get potentials(): Observable<Potential[]> {
      return this._potentials.asObservable()
    }
 
-   public get inputCurrents(): Observable<IInputCurrent[]> {
+   public get inputCurrents(): Observable<InputCurrent[]> {
     return this._inputCurrents.asObservable()
+  }
+
+  public get globalSpikes(): Observable<IGlobalSpikesUpdate> {
+    return this._globalSpikesInfo.asObservable()
   }
    
   constructor() {
@@ -35,19 +40,18 @@ export class SNNSimulationService {
     }
   }
 
-  
-
-
   public async startSimpleSimulation() {
 
     if (this.worker)  {
-
       this.worker.onmessage = ({ data }) => {
         let message = data as SimulationWorkerMessage
         switch (+message?.command) {
-          case SimulationCommand.DataUpdate:
-            this.parseSimulationResult(message.data)
-            break;
+          case SimulationCommand.NeuronSpikesUpdate:
+            this.parseNeuronSpikesUpdate(message.data)
+            break
+            case SimulationCommand.GlobalSpikesUpdate:
+              this.parseGlobalSpikesUpdate(message.data)
+              break
           default:
             break;
         }
@@ -58,12 +62,16 @@ export class SNNSimulationService {
     }
   }
 
-  private parseSimulationResult(result?: ISNNSImulationResult) {
-
+  private parseNeuronSpikesUpdate(result?: INeuronSpikesUpdate) {
     if (result) {
       this._inputCurrents.next(result.inputCurrents)
       this._potentials.next(result.potentials)
     }
+  }
 
+  private parseGlobalSpikesUpdate(result?: IGlobalSpikesUpdate) {
+    if (result) {
+      this._globalSpikesInfo.next(result)
+    }
   }
 }

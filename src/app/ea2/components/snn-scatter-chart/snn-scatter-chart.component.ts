@@ -1,41 +1,32 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 import { ISNNChartData2D } from '../../model/charts/snn-chart-data-2d';
+import { GlobalSpikesInfo, IGlobalSpikesUpdate } from '../../model/snn/snn-types';
 
 @Component({
-  selector: 'app-snn-line-chart',
-  templateUrl: './snn-line-chart.component.html',
-  styleUrls: ['./snn-line-chart.component.scss'],
+  selector: 'app-snn-scatter-chart',
+  templateUrl: './snn-scatter-chart.component.html',
+  styleUrls: ['./snn-scatter-chart.component.scss'],
 })
-export class SnnLineChartComponent implements OnInit {
+export class SnnScatterChartComponent implements OnInit {
 
-  private _data: ISNNChartData2D[] = []
+  private _data: IGlobalSpikesUpdate = null
 
   @Input('data')
-  public set dataIn(val) {
+  public set in(val) {
     this._data = val;
     if (this.chartContainer) {
       this.updateChart();
     }
   }
 
-  private _showMean: boolean = false
-
-  @Input('showMean')
-  public set meanIn(showMean) {
-    this._showMean = showMean
-    if (this.chartContainer) {
-      this.updateChart();
-    }
-  }
-
-  @ViewChild('lineChart')
+  @ViewChild('scatterChart')
   private chartContainer: ElementRef;
  
   /**
    * The chart's margin
    */
-  private margin = { top: 12, right: 24, bottom: 24, left: 24 };
+  private margin = { top: 12, right: 28, bottom: 24, left: 28 };
 
   /**
    * The current D3 SVG instance
@@ -112,66 +103,51 @@ export class SnnLineChartComponent implements OnInit {
     * Update the chart with received data update
     */
    updateChart() {
+     if (!this._data) { return }
+
+     console.log("will update scatter chart");
      const duration = 0
      // Create the X axis:
-     this.x.domain([d3.min(this._data, d => d.x), d3.max(this._data, d => d.x) ]);
+     this.x.domain([0, 1000]);
      this.svg.selectAll(".myXaxis").transition()
        .duration(duration)
        .call(this.xAxis);
  
      // create the Y axis
-     this.y.domain([d3.min(this._data, d => d.y), d3.max(this._data, d => d.y) ]);
+     this.y.domain([0, 1000]);
      this.svg.selectAll(".myYaxis")
        .transition()
        .duration(duration)
        .call(this.yAxis);
  
+     this.updatePoints(this._data.inhibitorySpikes, "excitatorySpikes",  "MidnightBlue", duration)
+     this.updatePoints(this._data.excitatorySpikes, "excitatorySpikes",  "Tomato", duration)
+   }
+
+   private updatePoints(spikesInfo: GlobalSpikesInfo[], pointsClassName: string, color: string, duration: number = 0) {
      // Create a update selection: bind to the new data
-     var u = this.svg.selectAll(".lineTest")
-       .data([this._data], d => d.x);
+     var update = this.svg.selectAll(`.${pointsClassName}-datapoints`)
+      .data(spikesInfo);
  
      // Updata the line
      const that = this
-     u
+     update
      .enter()
-     .append("path")
-     .attr("class","lineTest")
-     .merge(u)
-     .transition()
-     .duration(duration)
-     .attr("d", d3.line()
-       .x(d => that.x(d.x))
-       .y(d => that.y(d.y)))
-       .attr("fill", "none")
-       .attr("stroke", "Tomato")
-       .attr("stroke-width", 2)
+     .append("g")
+     .attr("class", "datapoints")
+     .merge(update)
+     .append("circle")
+      .attr("cx", d => that.x(d.t))
+      .attr("cy", d => that.y(d.totalNeurons))
+      .attr("r", 2.0)
+      .style("fill", color)
 
-    if(!this._showMean) { return }
-
-    // MEAN line
-    // Create a update selection: bind to the new data
-    var u2 = this.svg.selectAll(".meanTest")
-    .data([this._data], d => d.x);
-
-    const filteredData = this._data.filter(d => d.x >= 200 && d.x <= 700)
-    if (filteredData.length > 400) {
-      const ymean = d3.mean(filteredData, d => d.y); 
-
-      // Updata the line
-      u2
-      .enter()
-      .append("path")
-      .attr("class","meanTest")
-      .merge(u2)
-      .transition()
+      // animation
+      this.svg.selectAll("circle")
+        .transition()
       .duration(duration)
-      .attr("d", d3.line()
-        .x(d => that.x(d.x))
-        .y(d => that.y(ymean)))
-        .attr("fill", "none")
-        .attr("stroke", "MidnightBlue")
-        .attr("stroke-width", 3)
-    }
+      .attr("cx", d => that.x(d.t))
+      .attr("cy", d => that.y(d.totalNeurons))
    }
 
    /**
