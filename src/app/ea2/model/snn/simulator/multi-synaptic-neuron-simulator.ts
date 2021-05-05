@@ -100,7 +100,7 @@ export class MultiSynapticNeuronSimulator extends BaseSimulator {
 
       console.log("Simulation finished");
       var end = new Date().getTime();
-      console.info(`time needed: ${(end - start)/1000}s`, )
+      console.info(`time needed: ${(end - start)/1000}s`)
 
       this.postNeuronSpikesUpdate()
   }

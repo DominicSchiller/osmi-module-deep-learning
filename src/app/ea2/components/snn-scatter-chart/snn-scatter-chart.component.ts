@@ -66,7 +66,7 @@ export class SnnScatterChartComponent implements OnInit {
   /**
    * Create the SVG chart
    */
-   createChart() {
+   private createChart() {
      const element = this.chartContainer.nativeElement;
      d3.select(element).select('svg').remove();
 
@@ -102,7 +102,7 @@ export class SnnScatterChartComponent implements OnInit {
    /**
     * Update the chart with received data update
     */
-   updateChart() {
+   private updateChart() {
      if (!this._data) { return }
 
      console.log("will update scatter chart");
