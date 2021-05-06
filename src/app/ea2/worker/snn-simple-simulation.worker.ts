@@ -8,12 +8,16 @@ import { SimpleNeuronSimulator } from '../model/snn/simple/simulator/simple-neur
 import { SimpleSynapticNeuronSimulator } from '../model/snn/simple/simulator/simple-synaptic-neuron-simulator';
 import { ISimulator } from '../model/snn/simple/simulator/simulator.interface';
 import { InputCurrent, Potential } from '../model/snn/snn-types';
+import { SimpleLIFNeuronSimulator } from '../model/snn/lif/simulator/simple-lif-neuron-simulator';
+import { RadnomInputLIFNeuronSimulator } from '../model/snn/lif/simulator/random-input-lif-neuron-simulator';
 
 tf.setBackend('webgl');
 // var simulator:ISimulator = new SimpleNeuronSimulator()
 // var simulator:ISimulator = new SimpleSynapticNeuronSimulator()
 // var simulator:ISimulator = new MultiSynapticNeuronSimulator()
-var simulator:ISimulator = new MultiSynapticRecurrentNeuronSimulator()
+// var simulator:ISimulator = new MultiSynapticRecurrentNeuronSimulator()
+// var simulator: ISimulator = new SimpleLIFNeuronSimulator()
+var simulator: ISimulator = new RadnomInputLIFNeuronSimulator()
 
 addEventListener('message', ({ data }) => {
 

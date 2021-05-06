@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as tf from '@tensorflow/tfjs';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SimulationCommand, SimulationWorkerMessage } from '../model/snn/simulation-command';
-import { InputCurrent, Potential, INeuronSpikesUpdate, GlobalSpikesInfo, IGlobalSpikesUpdate } from '../model/snn/snn-types';
+import { InputCurrent, Potential, INeuronSpikesUpdate, GlobalSpikesInfo, IGlobalSpikesUpdate, LIFNeuronResponseUpdate } from '../model/snn/snn-types';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,7 @@ export class SNNSimulationService {
    private _inputCurrents = new BehaviorSubject<InputCurrent[]>([])
    private _potentials = new BehaviorSubject<Potential[]>([])
    private _globalSpikesInfo = new BehaviorSubject<IGlobalSpikesUpdate>(null)
+   private _lifNeuronResponseUpdate = new BehaviorSubject<LIFNeuronResponseUpdate>(null)
 
    public get potentials(): Observable<Potential[]> {
      return this._potentials.asObservable()
@@ -26,6 +27,10 @@ export class SNNSimulationService {
 
   public get globalSpikes(): Observable<IGlobalSpikesUpdate> {
     return this._globalSpikesInfo.asObservable()
+  }
+
+  public get lifNeuronResponseUpdate(): Observable<LIFNeuronResponseUpdate> {
+    return this._lifNeuronResponseUpdate.asObservable()
   }
    
   constructor() {
@@ -52,6 +57,9 @@ export class SNNSimulationService {
             case SimulationCommand.GlobalSpikesUpdate:
               this.parseGlobalSpikesUpdate(message.data)
               break
+            case SimulationCommand.LIFNeuronResponseUpdate:
+              this.parseLIFNeuronResponseUpdate(message.data)
+              break    
           default:
             break;
         }
@@ -72,6 +80,12 @@ export class SNNSimulationService {
   private parseGlobalSpikesUpdate(result?: IGlobalSpikesUpdate) {
     if (result) {
       this._globalSpikesInfo.next(result)
+    }
+  }
+
+  private parseLIFNeuronResponseUpdate(update?: LIFNeuronResponseUpdate) {
+    if (update) {
+      this._lifNeuronResponseUpdate.next(update)
     }
   }
 }

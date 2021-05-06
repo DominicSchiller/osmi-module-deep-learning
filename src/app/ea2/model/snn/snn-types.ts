@@ -29,3 +29,11 @@ export interface IGlobalSpikesUpdate {
     inhibitorySpikes: GlobalSpikesInfo[]
     excitatorySpikes: GlobalSpikesInfo[]
 }
+
+export class LIFNeuronResponse {
+   constructor(public t: number, public u: number, public tRest: number) {}
+}
+
+export class LIFNeuronResponseUpdate {
+    constructor(public uThreshold: number, public responses: LIFNeuronResponse[]) {}
+}

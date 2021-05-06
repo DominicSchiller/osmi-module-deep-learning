@@ -11,8 +11,9 @@
         <app-snn-line-chart [data]="currentData" [showMean]=true></app-snn-line-chart>
       </div>
       <div class="chart-wrapper">
+        <app-snn-lif-response-line-chart [data]="lifNeuronResponse" [showMean]=false></app-snn-lif-response-line-chart>
         <!-- <app-snn-line-chart [data]="potentialData"></app-snn-line-chart> -->
-        <app-snn-scatter-chart [data]="globalSpikes"></app-snn-scatter-chart>
+        <!-- <app-snn-scatter-chart [data]="globalSpikes"></app-snn-scatter-chart> -->
       </div>
      
     </div>
