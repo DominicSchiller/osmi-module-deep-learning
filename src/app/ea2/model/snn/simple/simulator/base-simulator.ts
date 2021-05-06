@@ -1,6 +1,6 @@
 import * as tf from '@tensorflow/tfjs';
-import { SimulationCommand, SimulationWorkerMessage } from "../simulation-command"
-import { InputCurrent, Potential } from "../snn-types"
+import { SimulationCommand, SimulationWorkerMessage } from "../../simulation-command"
+import { InputCurrent, Potential } from "../../snn-types"
 import { ISimulator } from "./simulator.interface"
 
 export abstract class BaseSimulator implements ISimulator {

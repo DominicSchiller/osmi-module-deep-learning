@@ -2,7 +2,7 @@
 import * as tf from '@tensorflow/tfjs';
 
 import { SimpleNeuron } from "../neurons/simple-neuron"
-import { SimulationCommand, SimulationWorkerMessage } from "../simulation-command"
+import { SimulationCommand, SimulationWorkerMessage } from "../../simulation-command"
 import { BaseSimulator } from './base-simulator';
 
 export class SimpleNeuronSimulator extends BaseSimulator {

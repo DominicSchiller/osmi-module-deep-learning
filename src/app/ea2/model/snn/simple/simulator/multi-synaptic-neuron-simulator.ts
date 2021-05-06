@@ -2,8 +2,8 @@
 import * as tf from '@tensorflow/tfjs';
 
 import { SimpleSynapticNeuron } from '../neurons/simple-synaptic-neuron';
-import { SimulationCommand, SimulationWorkerMessage } from "../simulation-command"
-import { GlobalSpikesInfo, InputCurrent, Potential } from "../snn-types"
+import { SimulationCommand, SimulationWorkerMessage } from "../../simulation-command"
+import { GlobalSpikesInfo, InputCurrent, Potential } from "../../snn-types"
 import { BaseSimulator } from './base-simulator';
 
 export class MultiSynapticNeuronSimulator extends BaseSimulator {
