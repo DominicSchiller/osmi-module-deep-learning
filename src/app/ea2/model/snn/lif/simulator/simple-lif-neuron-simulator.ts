@@ -45,8 +45,9 @@ export class SimpleLIFNeuronSimulator implements ISimulator {
             this.neuron.dt.assign(tf.scalar(this.dt))
 
             // calculate results
-            const u = this.neuron.getPotentialOp().uOp.dataSync()[0]
-            const tRest = this.neuron.getPotentialOp().tRestOp.dataSync()[0]
+            const result = this.neuron.getPotentialOp()
+            const u = result.uOp.dataSync()[0]
+            const tRest = result.tRestOp.dataSync()[0]
 
             this.I.push( { t: t, i: [iApp] })
             this.U.push( new LIFNeuronResponse(t, u, tRest))

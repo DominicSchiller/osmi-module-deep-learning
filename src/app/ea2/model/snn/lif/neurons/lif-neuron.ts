@@ -63,15 +63,15 @@ export class LIFNeuron {
         this.tau = tau,
         this.r = r
 
-        this.initVariablesAndPlaceholders()
+        // this.initVariablesAndPlaceholders()
     }
 
-    private initVariablesAndPlaceholders() {
+    public initVariablesAndPlaceholders() {
         this.u = tf.variable(tf.scalar(this.uRest))
         this.tRest = tf.variable(tf.scalar(0))
         this.iApp = tf.variable(tf.scalar(0))
         this.dt = tf.variable(tf.scalar(0))
-        console.info("init props")
+        console.info("LIF props init complete")
     }
 
     /**
