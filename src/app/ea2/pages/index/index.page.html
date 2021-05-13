@@ -8,10 +8,11 @@
   <div id="ea2-content">
     <div id="charts-section">
       <div class="chart-wrapper">
-        <app-snn-line-chart [data]="currentData" [showMean]=true></app-snn-line-chart>
+        <!-- <app-snn-line-chart [data]="currentData" [showMean]=true></app-snn-line-chart> -->
+        <app-snn-lif-current-line-chart [data]="lifNeuronResponse" [showMean]=false></app-snn-lif-current-line-chart>
       </div>
       <div class="chart-wrapper">
-        <app-snn-lif-response-line-chart [data]="lifNeuronResponse" [showMean]=false></app-snn-lif-response-line-chart>
+        <app-snn-lif-potential-line-chart [data]="lifNeuronResponse" [showMean]=false></app-snn-lif-potential-line-chart>
         <!-- <app-snn-line-chart [data]="potentialData"></app-snn-line-chart> -->
         <!-- <app-snn-scatter-chart [data]="globalSpikes"></app-snn-scatter-chart> -->
       </div>

@@ -42,6 +42,8 @@ export class LIFNeuron {
      */
     public dt: tf.Variable
 
+    public state: LIFNeuronState = LIFNeuronState.UNKNOWN
+
     /**
      * Create a new LIF Neuron
      * @param uRest 
@@ -124,10 +126,23 @@ export class LIFNeuron {
 
     public getPotentialOp() {
         if (this.tRest.dataSync()[0] > 0.0) {
+            this.state = LIFNeuronState.RESTING
             return this.getRestingOp()
         } else if (this.u.dataSync()[0] > this.uThresh) {
+            this.state = LIFNeuronState.FIRING
             return this.getFiringOp()
-        } else return this.getIntegrationOp()
+        } else {
+            this.state = LIFNeuronState.INTEGRATING
+            return this.getIntegrationOp()
+        }
     }
 
+}
+
+
+export enum LIFNeuronState {
+    UNKNOWN,
+    RESTING,
+    FIRING,
+    INTEGRATING
 }

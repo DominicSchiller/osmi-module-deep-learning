@@ -1,15 +1,15 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
-import { LIFNeuronResponseUpdate } from '../../model/snn/snn-types';
+import { LIFSimulationDataUpdate } from '../../model/snn/snn-types';
 
 @Component({
-  selector: 'app-snn-lif-response-line-chart',
-  templateUrl: './snn-lif-response-line-chart.component.html',
-  styleUrls: ['./snn-lif-response-line-chart.component.scss'],
+  selector: 'app-snn-lif-current-line-chart',
+  templateUrl: './snn-lif-current-line-chart.component.html',
+  styleUrls: ['./snn-lif-current-line-chart.component.scss'],
 })
-export class SNNLIFResponseLineChartComponent implements OnInit {
+export class SNNLIFCurrentLineChartComponent implements OnInit {
 
-  private _data: LIFNeuronResponseUpdate = null
+  private _data: LIFSimulationDataUpdate = null
 
   @Input('data')
   public set dataIn(val) {
@@ -116,27 +116,25 @@ export class SNNLIFResponseLineChartComponent implements OnInit {
 
      const duration = 0
      // Create the X axis:
-     this.x.domain([0, d3.max(this._data.responses, d => d.t) ]);
+     this.x.domain([0, d3.max(this._data.currents, d => d.t) ]);
      this.svg.selectAll(".myXaxis").transition()
        .duration(duration)
        .call(this.xAxis);
  
      // create the Y axis
-     this.y.domain([0, d3.max(this._data.responses, d => d.u > d.tRest ? d.u : d.tRest) ]);
+     this.y.domain([0, d3.max(this._data.currents, d => d.i) ]);
      this.svg.selectAll(".myYaxis")
        .transition()
        .duration(duration)
        .call(this.yAxis);
 
-    this.drawDataLine("u", duration, "#6495ED")
-    this.drawDataLine("tRest", duration, "#FFBF00")
-    this.drawThresholdLine("#DE3163", duration)
+    this.drawDataLine("i", duration, "#6495ED")
    }
 
    private drawDataLine(yDataPropertyName: string, duration: number, color: string) {
      // Create a update selection: bind to the new data
      var u = this.svg.selectAll(`.data-line-${yDataPropertyName}`)
-       .data([this._data.responses], d => d[yDataPropertyName]);
+       .data([this._data.currents], d => d[yDataPropertyName]);
  
      // Updata the line
      const that = this
@@ -159,7 +157,7 @@ export class SNNLIFResponseLineChartComponent implements OnInit {
      const threshold = this._data.uThreshold
     // Create a update selection: bind to the new data
     var u2 = this.svg.selectAll(".threshold-line")
-    .data([this._data.responses], d => d.t);
+    .data([this._data.currents], d => d.t);
 
 
       // Updata the line

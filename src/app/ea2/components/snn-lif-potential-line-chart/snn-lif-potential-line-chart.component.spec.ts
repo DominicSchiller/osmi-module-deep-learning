@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { SNNLIFResponseLineChartComponent } from './snn-lif-response-line-chart.component';
+import { SNNLIFPotentialLineChartComponent } from './snn-lif-potential-line-chart.component';
 
 describe('SnnLifPotentialLineChartComponent', () => {
-  let component: SNNLIFResponseLineChartComponent;
-  let fixture: ComponentFixture<SNNLIFResponseLineChartComponent>;
+  let component: SNNLIFPotentialLineChartComponent;
+  let fixture: ComponentFixture<SNNLIFPotentialLineChartComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SNNLIFResponseLineChartComponent ],
+      declarations: [ SNNLIFPotentialLineChartComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SNNLIFResponseLineChartComponent);
+    fixture = TestBed.createComponent(SNNLIFPotentialLineChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

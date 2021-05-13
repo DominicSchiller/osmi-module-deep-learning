@@ -66,7 +66,6 @@ export class LIFSynapticNeuron extends LIFNeuron {
         this.tSpikes = tf.variable(tf.fill([this.maxSpikes, this.nSyn], -1, 'float32'))
         this.tSpikesIdx = tf.variable(tf.scalar(this.maxSpikes-1, 'int32'))
         this.synHasSpiked = tf.variable(tf.fill([this.nSyn], 0, 'bool'))
-        this.synHasSpiked.print()
     }
 
     public updateSpikeTimes() {

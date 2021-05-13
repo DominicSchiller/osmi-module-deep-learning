@@ -1,3 +1,58 @@
 <div #webglSceneWrapper id="webgl-scene-wrapper">
-  Test
+    <div id="simulation-controls-section">
+       <div class="group">
+            <ion-item>
+                <ion-label>n<sub>Neurones</sub></ion-label>
+                <ion-input type="number" min="1" max="1000" step="25" 
+                    [value]="lifSimulationService.nNeuron | async" 
+                    (change)="lifSimulationService.setNNeuron($event.target.value)"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>n<sub>Synapses</sub></ion-label>
+                <ion-input type="number" min="0" max="10" step="1"
+                    [value]="lifSimulationService.nSyn | async" 
+                    (change)="lifSimulationService.setNSyn($event.target.value)"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>net<sub>degree</sub></ion-label>
+                <ion-input type="number" min="0" max="100" step="1" unit="%"
+                    [value]="lifSimulationService.networkingGrade | async" 
+                    (change)="lifSimulationService.setNetworkingGrade($event.target.value)"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>r</ion-label>
+                <ion-input type="number" min="1" max="100" step="1" unit="ohm"
+                    [value]="lifSimulationService.r | async" 
+                    (change)="lifSimulationService.setR($event.target.value)"></ion-input>
+            </ion-item>
+        </div>
+       <div class="group">
+            <ion-item>
+                <ion-label>u<sub>Rest</sub></ion-label>
+                <ion-input type="number" min="0" max="4" step="1" unit="mv"
+                    [value]="lifSimulationService.uRest | async" 
+                    (change)="lifSimulationService.setURest($event.target.value)"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>u<sub>Thresh</sub></ion-label>
+                <ion-input type="number" min="0" max="10" step="1" unit="mv"
+                    [value]="lifSimulationService.uThresh | async" 
+                    (change)="lifSimulationService.setUThresh($event.target.value)"></ion-input>
+            </ion-item>
+        </div>
+       <div class="group">
+            <ion-item>
+                <ion-label>&tau;</ion-label>
+                <ion-input type="number" min="1" max="100" step="1" unit="ms"
+                    [value]="lifSimulationService.tau | async" 
+                    (change)="lifSimulationService.setTau($event.target.value)"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label>&tau;<sub>Rest</sub></ion-label>
+                <ion-input type="number" min="1" max="100" step="1" unit="ms"
+                    [value]="lifSimulationService.tauRest | async" 
+                    (change)="lifSimulationService.setTauRest($event.target.value)"></ion-input>
+            </ion-item>
+        </div>
+    </div>
 </div>

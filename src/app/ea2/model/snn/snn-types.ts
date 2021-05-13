@@ -30,10 +30,14 @@ export interface IGlobalSpikesUpdate {
     excitatorySpikes: GlobalSpikesInfo[]
 }
 
-export class LIFNeuronResponse {
+export class LIFNeuronPotential {
    constructor(public t: number, public u: number, public tRest: number) {}
 }
 
-export class LIFNeuronResponseUpdate {
-    constructor(public uThreshold: number, public responses: LIFNeuronResponse[]) {}
+export class LIFNeuronCurrent {
+    constructor(public t: number, public i: number) {}
+}
+
+export class LIFSimulationDataUpdate {
+    constructor(public uThreshold: number, public potentials: LIFNeuronPotential[], public currents: LIFNeuronCurrent[]) {}
 }
