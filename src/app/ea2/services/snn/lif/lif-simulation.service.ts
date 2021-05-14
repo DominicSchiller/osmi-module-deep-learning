@@ -77,6 +77,7 @@ export class LIFSimulationService {
   public setNetworkingGrade(value: number) {
     this.model.networkingGrade = +value
     this.networkingGrade.next(+value);
+    this.postModelUpdate();
   }
 
   // Simulation Results
@@ -100,7 +101,6 @@ export class LIFSimulationService {
   }
 
   async startSimulation() {
-    console.error("Start simulation");
     if (typeof Worker !== 'undefined') {
       // Create a new
       this.worker = new Worker('../../../worker/lif-simulation.worker', { type: 'module' });

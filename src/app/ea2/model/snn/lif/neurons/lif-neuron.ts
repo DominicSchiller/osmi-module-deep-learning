@@ -73,7 +73,6 @@ export class LIFNeuron {
         this.tRest = tf.variable(tf.scalar(0))
         this.iApp = tf.variable(tf.scalar(0))
         this.dt = tf.variable(tf.scalar(0))
-        console.info("LIF props init complete")
     }
 
     /**

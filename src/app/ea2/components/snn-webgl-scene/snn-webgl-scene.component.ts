@@ -60,7 +60,7 @@ export class SnnWebglSceneComponent implements OnInit {
     const width =  this.webGLScaneWrapper.nativeElement.offsetWidth;
     const height =  this.webGLScaneWrapper.nativeElement.offsetHeight;
 
-    console.info('WebGL Scene size: ', width, height);
+    // console.info('WebGL Scene size: ', width, height);
 
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color( 0xffffff );
@@ -73,7 +73,7 @@ export class SnnWebglSceneComponent implements OnInit {
     this.camera.position.set(-25, 50, 100);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    console.log("Device pixel ration: ", window.devicePixelRatio)
+    // console.log("Device pixel ration: ", window.devicePixelRatio)
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -112,8 +112,8 @@ export class SnnWebglSceneComponent implements OnInit {
     const n = this.neuronData.neurons.length
     let neurons: THREE.Mesh[] = []
     for (var i=0; i<n; i++) {
-      let randomXPos = this.randomIntFromInterval(-100, 100)
-      let randomYPos = this.randomIntFromInterval(-36, 36) 
+      let randomXPos = this.randomIntFromInterval(-50, 50)
+      let randomYPos = this.randomIntFromInterval(-50, 50)
       let randomZPos = this.randomIntFromInterval(-50, 50)
       let neuron = this.createSphere(1, 23, 23, `sphere-${i}`, randomXPos, randomYPos, randomZPos)
       neurons.push(neuron)

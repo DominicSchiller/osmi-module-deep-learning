@@ -18,7 +18,7 @@ export class LIFSynapticNeuronSimulator {
             if (this.model.nNeuron != newModel.nNeuron || 
                 this.model.nSyn != newModel.nSyn ||
                 this.model.networkingGrade != newModel.networkingGrade) {
-                    console.warn("Restarting simulation due to neuron core property updates ...");
+                    // console.warn("Restarting simulation due to neuron core property updates ...");
                     this.window.clearInterval(this.simulationIntervalID);
                     this.model = newModel;
                     this.simulate()
@@ -41,6 +41,7 @@ export class LIFSynapticNeuronSimulator {
         this.model.tau = otherModel.tau
         this.model.tauRest = otherModel.tauRest
         this.model.f = otherModel.f
+        this.model.networkingGrade = otherModel.networkingGrade
     }
 
     private initVariables() {
@@ -76,7 +77,7 @@ export class LIFSynapticNeuronSimulator {
         for (var i=0; i<this.model.nNeuron; i++) {
             let postNeuronConnections: number[] = []
             for (var j=0; j<this.model.nNeuron; j++) {
-                if (Math.random() < 0.1) {
+                if (Math.random() < this.model.networkingGrade/100) {
                 postNeuronConnections.push(j)
                 }
             }

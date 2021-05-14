@@ -10,7 +10,7 @@ tf.setBackend('cpu');
 var window = self;
 
 // START OF WORKER THREAD CODE
-console.log('Starting Simulation Thread ... ');
+// console.log('Starting Simulation Thread ... ');
 
 var simulator = new LIFSynapticNeuronSimulator(window)
 
