@@ -7,12 +7,40 @@ import { LIFSynapticNeuron } from '../neurons/lif-synaptic-neuron';
 
 export class LIFSynapticNeuronSimulator {
 
-    public model: LIFSimulationModel = null
+    private model: LIFSimulationModel = null
     public window: DedicatedWorkerGlobalScope
+    public simulationIntervalID: any
+
+    public setModel(newModel: LIFSimulationModel) {
+        if (!this.model) {
+            this.model = newModel
+        } else {
+            if (this.model.nNeuron != newModel.nNeuron || 
+                this.model.nSyn != newModel.nSyn ||
+                this.model.networkingGrade != newModel.networkingGrade) {
+                    console.warn("Restarting simulation due to neuron core property updates ...");
+                    this.window.clearInterval(this.simulationIntervalID);
+                    this.model = newModel;
+                    this.simulate()
+            } else {
+                this.mergeModel(newModel)
+                this.updateNeurons()
+            }
+        }
+    }
 
     constructor(window) {
         tf.setBackend('cpu');
         this.window = window
+    }
+
+    public mergeModel(otherModel) {
+        this.model.r = otherModel.r
+        this.model.uRest = otherModel.uRest
+        this.model.uThresh = otherModel.uThresh
+        this.model.tau = otherModel.tau
+        this.model.tauRest = otherModel.tauRest
+        this.model.f = otherModel.f
     }
 
     private initVariables() {
@@ -28,6 +56,7 @@ export class LIFSynapticNeuronSimulator {
             const wSyn = tf.randomNormal([this.model.nSyn], 1.0, 0.5)
             const neuron = new LIFSynapticNeuron(this.model.nSyn, wSyn, this.model.T)
             neuron.initVariablesAndPlaceholders()
+            neuron.updateParams(this.model)
             this.model.neuronData.neurons.push(neuron)
 
             // init synHasSpiked
@@ -54,7 +83,13 @@ export class LIFSynapticNeuronSimulator {
             this.model.neuronData.connectionsMap.push(postNeuronConnections)
         }
 
-        this.postNeuronsUpdate()
+        this.postNeuronsUpdate(true)
+    }
+
+    private updateNeurons() {
+        for (let neuron of this.model.neuronData.neurons) {
+            neuron.updateParams(this.model)
+        }
     }
 
     async simulate() {
@@ -64,10 +99,9 @@ export class LIFSynapticNeuronSimulator {
         this.initVariables()
 
         var t = 0
-        const simInterval = setInterval(() => {
+        this.simulationIntervalID = setInterval(() => {
             // const t = step
 
-            console.warn("running ...")
             for (var n=0; n<this.model.nNeuron; n++) {
                 if (t > 10 && t < 180) {
                     const r = tf.randomUniform([this.model.nSyn], 0, 1)
@@ -97,7 +131,7 @@ export class LIFSynapticNeuronSimulator {
             t++;
             if (t >= this.model.T) {
                 // @ts-ignore
-                this.window.clearInterval(simInterval);
+                this.window.clearInterval(this.simulationIntervalID);
                 console.log("Simulation finished");
                 var end = new Date().getTime();
                 console.info(`time needed: ${(end - start)/1000}s`)
@@ -125,7 +159,8 @@ export class LIFSynapticNeuronSimulator {
         ));
       }
 
-    protected postNeuronsUpdate() {
+    protected postNeuronsUpdate(isInitial: boolean = false) {
+        this.model.neuronData.isInititalData = isInitial;
         postMessage(new LIFSimulationWorkerEvent(
             LIFSimulationCommand.NEURON_DATA_UPDATE,
             this.model.neuronData

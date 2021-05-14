@@ -19,7 +19,7 @@ addEventListener('message', ({ data }) => {
   switch (+(event.command)) {
     case LIFSimulationCommand.SET_MODEL:
         const model = event.data as LIFSimulationModel
-        simulator.model = model
+        simulator.setModel(model);
         break;
     case LIFSimulationCommand.START:
         simulator.simulate();

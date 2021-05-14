@@ -6,9 +6,14 @@
 
 <ion-content>
   <div id="ea2-content">
+    <div id="webgl-section">
+      <app-snn-webgl-scene></app-snn-webgl-scene>
+    </div>
     <div id="charts-section">
       <div class="chart-wrapper">
-        <!-- <app-snn-line-chart [data]="currentData" [showMean]=true></app-snn-line-chart> -->
+        <app-snn-lif-current-line-chart [data]="lifNeuronResponse" [showMean]=false></app-snn-lif-current-line-chart>
+      </div>
+      <div class="chart-wrapper">
         <app-snn-lif-current-line-chart [data]="lifNeuronResponse" [showMean]=false></app-snn-lif-current-line-chart>
       </div>
       <div class="chart-wrapper">
@@ -16,12 +21,7 @@
         <!-- <app-snn-line-chart [data]="potentialData"></app-snn-line-chart> -->
         <!-- <app-snn-scatter-chart [data]="globalSpikes"></app-snn-scatter-chart> -->
       </div>
-     
     </div>
-    <div id="webgl-section">
-      <app-snn-webgl-scene></app-snn-webgl-scene>
-    </div>
-   
   </div>
   
 </ion-content>

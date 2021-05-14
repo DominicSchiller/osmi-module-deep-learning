@@ -33,4 +33,5 @@ export class LIFSimulationModel {
 export class LIFNeuronData {
     public neurons: LIFSynapticNeuron[] = []
     public connectionsMap: number[][] = []
+    public isInititalData: boolean = false
 }

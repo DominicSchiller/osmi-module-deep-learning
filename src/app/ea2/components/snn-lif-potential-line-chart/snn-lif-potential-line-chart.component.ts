@@ -35,7 +35,7 @@ export class SNNLIFPotentialLineChartComponent implements OnInit {
   /**
    * The chart's margin
    */
-  private margin = { top: 12, right: 24, bottom: 24, left: 24 };
+  private margin = { top: 12, right: 24, bottom: 24, left: 36 };
 
   /**
    * The current D3 SVG instance

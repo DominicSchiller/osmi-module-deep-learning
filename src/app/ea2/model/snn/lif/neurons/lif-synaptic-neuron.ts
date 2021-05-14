@@ -1,4 +1,5 @@
 import * as tf from '@tensorflow/tfjs';
+import { LIFSimulationModel } from '../lif-simulation-model';
 import { LIFNeuron } from "./lif-neuron";
 
 export class LIFSynapticNeuron extends LIFNeuron {
@@ -66,6 +67,14 @@ export class LIFSynapticNeuron extends LIFNeuron {
         this.tSpikes = tf.variable(tf.fill([this.maxSpikes, this.nSyn], -1, 'float32'))
         this.tSpikesIdx = tf.variable(tf.scalar(this.maxSpikes-1, 'int32'))
         this.synHasSpiked = tf.variable(tf.fill([this.nSyn], 0, 'bool'))
+    }
+
+    public updateParams(model: LIFSimulationModel) {
+        this.tauRest = model.tauRest
+        this.tau = model.tau
+        this.uRest = model.uRest
+        this.uThresh = model.uThresh
+        this.r = model.r
     }
 
     public updateSpikeTimes() {

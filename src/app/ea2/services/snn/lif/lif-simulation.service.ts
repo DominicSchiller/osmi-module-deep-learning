@@ -27,48 +27,56 @@ export class LIFSimulationService {
   public readonly neuronData = new BehaviorSubject<LIFNeuronData>(null)
 
   public setNNeuron(value: number) {
-    this.model.nNeuron = value;
-    this.nNeuron.next(value);
-    console.warn("Setting n")
+    this.model.nNeuron = +value;
+    this.nNeuron.next(+value);
+    this.postModelUpdate();
   }
 
   public setNSyn(value: number) {
-    this.model.nSyn = value;
-    this.nSyn.next(value);
+    this.model.nSyn = +value;
+    this.nSyn.next(+value);
+    this.postModelUpdate();
   }
 
   public setURest(value: number) {
-    this.model.nSyn = value;
-    this.uRest.next(value);
+    this.model.uRest = +value;
+    this.uRest.next(+value);
+    this.postModelUpdate();
   }
 
   public setUThresh(value: number) {
-    this.model.uThresh = value;
-    this.uThresh.next(value);
+    this.model.uThresh = +value;
+    this.uThresh.next(+value);
+    this.postModelUpdate();
   }
 
   public setTauRest(value: number) {
-    this.model.tauRest = value;
-    this.tauRest.next(value);
+    this.model.tauRest = +value;
+    this.tauRest.next(+value);
+    this.postModelUpdate();
   }
 
   public setTau(value: number) {
-    this.model.tau = value;
-    this.tau.next(value);
+    this.model.tau = +value;
+    this.tau.next(+value);
+    this.postModelUpdate();
   }
 
   public setR(value: number) {
-    this.model.r = value;
-    this.r.next(value);
+    this.model.r = +value;
+    this.r.next(+value);
+    this.postModelUpdate();
   }
 
   public setF(value: number) {
-    this.model.f = value;
-    this.f.next(value);
+    this.model.f = +value;
+    this.f.next(+value);
+    this.postModelUpdate();
   }
 
   public setNetworkingGrade(value: number) {
-    this.networkingGrade.next(value);
+    this.model.networkingGrade = +value
+    this.networkingGrade.next(+value);
   }
 
   // Simulation Results
@@ -83,6 +91,8 @@ export class LIFSimulationService {
     return this._inputCurrents.asObservable()
   }
 
+  private worker: Worker = null;
+
   // Simulation Working Variables
 
   constructor() { 
@@ -90,10 +100,11 @@ export class LIFSimulationService {
   }
 
   async startSimulation() {
+    console.error("Start simulation");
     if (typeof Worker !== 'undefined') {
       // Create a new
-      const worker = new Worker('../../../worker/lif-simulation.worker', { type: 'module' });
-      worker.onmessage = ({ data }) => {
+      this.worker = new Worker('../../../worker/lif-simulation.worker', { type: 'module' });
+      this.worker.onmessage = ({ data }) => {
         var event = data as LIFSimulationWorkerEvent
         switch (+(event.command)) {
           case LIFSimulationCommand.POTENTIAL_UPDATE:
@@ -107,13 +118,17 @@ export class LIFSimulationService {
             break;
         }
       };
-      worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.SET_MODEL, this.model));
-      worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.START));
+      this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.SET_MODEL, this.model));
+      this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.START));
     }
   }
 
   public async stopSImulation() {
 
+  }
+
+  private async postModelUpdate() {
+    this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.SET_MODEL, this.model));
   }
 
   

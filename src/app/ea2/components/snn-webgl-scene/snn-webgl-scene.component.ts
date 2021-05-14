@@ -20,8 +20,12 @@ export class SnnWebglSceneComponent implements OnInit {
       this.neuronData = neuronData
 
       if (this.neuronData) {
-        if (!this.renderer) {
+        if (!this.renderer || neuronData.isInititalData) {
+          if (this.renderer && neuronData.isInititalData) {
+            this.clearScene()
+          }
           this.initScene()
+          this.initNeurons()
           this.updateNeuronsState()
         } else {
           this.updateNeuronsState()
@@ -97,6 +101,13 @@ export class SnnWebglSceneComponent implements OnInit {
     this.addAmbientLight();
     // this.addDirectionalLight();
 
+    // click handling
+    this.webGLScaneWrapper.nativeElement.addEventListener('click', (event) => { this.onHandleClick(event); }, false);
+
+    this.update();
+  }
+
+  initNeurons() {
     // create neurons
     const n = this.neuronData.neurons.length
     let neurons: THREE.Mesh[] = []
@@ -139,11 +150,10 @@ export class SnnWebglSceneComponent implements OnInit {
       this.scene.add(neuron)
       this.scene.add(this.createOutline(neuron as Mesh, 'rgb(43, 202, 255)'))
     }
+  }
 
-    // click handling
-    this.webGLScaneWrapper.nativeElement.addEventListener('click', (event) => { this.onHandleClick(event); }, false);
-
-    this.update();
+  clearScene() {
+    this.webGLScaneWrapper.nativeElement.removeChild(this.renderer.domElement);
   }
 
   updateNeuronsState() {
@@ -249,8 +259,6 @@ export class SnnWebglSceneComponent implements OnInit {
     if ( intersects.length > 0 ) {
       console.info('intersected', intersects);
       const t = (intersects[0].object as InteractiveMesh)?.onClicked();
-    } else {
-      console.log('no intersection');
     }
   }
 }
