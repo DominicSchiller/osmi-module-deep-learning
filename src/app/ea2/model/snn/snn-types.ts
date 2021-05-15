@@ -38,6 +38,10 @@ export class LIFNeuronCurrent {
     constructor(public t: number, public i: number) {}
 }
 
+export class LIFNeuronSpikes {
+    constructor(public t: number, public spikes: number) {}
+}
+
 export class LIFSimulationDataUpdate {
-    constructor(public uThreshold: number, public potentials: LIFNeuronPotential[], public currents: LIFNeuronCurrent[]) {}
+    constructor(public uThreshold: number, public potentials: LIFNeuronPotential[], public currents: LIFNeuronCurrent[], public neuronSpikes: LIFNeuronSpikes[]) {}
 }

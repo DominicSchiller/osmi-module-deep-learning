@@ -15,7 +15,7 @@ export class LIFSynapticNeuron extends LIFNeuron {
     public maxSpikes: number
 
     /**
-     * The neuron synaptic 'charge'
+     * The (additional) neuron synaptic 'charge' to charge the cell membrane
      */
     public q: number
     /**

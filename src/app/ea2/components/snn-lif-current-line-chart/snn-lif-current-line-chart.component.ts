@@ -69,7 +69,7 @@ export class SNNLIFCurrentLineChartComponent implements OnInit {
    setTimeout(() => {
     this.createChart()
     this.updateChart()
-   }, 50)
+   }, 250)
   }
  
   /**
@@ -106,6 +106,21 @@ export class SNNLIFCurrentLineChartComponent implements OnInit {
      this.yAxis = d3.axisLeft().scale(this.y);
      this.svg.append("g")
        .attr("class","myYaxis")
+       
+    this.svg.append("text")
+       .attr("class", "y label")
+       .attr("text-anchor", "end")
+       .attr("y", 12)
+       .attr("dy", ".5em")
+       .attr("transform", "rotate(-90)")
+       .text("Current (mA)");
+
+      this.svg.append("text")
+       .attr("class", "x label")
+       .attr("text-anchor", "end")
+       .attr("x", contentWidth)
+       .attr("y", contentHeight - 12)
+       .text("Time (ms)");
    }
  
    /**
@@ -128,7 +143,7 @@ export class SNNLIFCurrentLineChartComponent implements OnInit {
        .duration(duration)
        .call(this.yAxis);
 
-    this.drawDataLine("i", duration, "#6495ED")
+    this.drawDataLine("i", duration, "#ff6b7c")
    }
 
    private drawDataLine(yDataPropertyName: string, duration: number, color: string) {

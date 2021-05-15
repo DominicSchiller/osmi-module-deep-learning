@@ -2,11 +2,33 @@
     height: 100%;    
     height: 100%;
 
-    #simulation-controls-section {
-        height: 200px;
-        width: 20vw;
+    #options-button {
         position: absolute;
-        
+        top: 24px;
+        left: 24px;
+    }
+    #simulation-options-section {
+        height: 200px;
+        width: 30vw;
+        position: absolute;
+        top: 50px;
+        opacity: 0;
+        transition: all 0.25s ease-in-out;
+
+        &.active {
+            opacity: 1;
+            top: 88px;
+        }
+
+        ion-range::part(pin) {
+            transform: translate3d(0px, 10px, 0px) scale(1);
+          }
+
+        ion-range[unit="%"]::part(pin)::after { content: "%"; }
+        ion-range[unit="ms"]::part(pin)::after { content: "ms"; }
+        ion-range[unit="mv"]::part(pin)::after { content: "mV"; }
+        ion-range[unit="ohm"]::part(pin)::after { content: "\2126"; }
+
         ion-input[unit="%"]::after { content: "%"; }
         ion-input[unit="ms"]::after { content: "ms"; }
         ion-input[unit="mv"]::after { content: "mV"; }
@@ -22,20 +44,23 @@
 
             ion-item {
                 // flex: 1;
-                width: calc(50% - 8px);
+                // width: 100%;
+                width: 15vw;
                 
                 &.full-width {
                     width: 100%;
                 }
 
                 ion-label {
+                    min-width: 20%;
+                    font-style: italic;
                     overflow: visible;
                 }
             }
         }
 
         ion-label {
-            min-width: 40%;
+            // min-width: 40%;
             font-weight: 700;
 
             sub, sup {

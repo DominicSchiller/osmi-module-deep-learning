@@ -14,6 +14,9 @@ import { LIFSimulationService } from '../../services/snn/lif/lif-simulation.serv
 })
 export class SnnWebglSceneComponent implements OnInit {
 
+
+  public isMenuActive: boolean = false
+
   constructor(public lifSimulationService: LIFSimulationService) { 
 
     lifSimulationService.neuronData.subscribe(neuronData => {
@@ -32,7 +35,10 @@ export class SnnWebglSceneComponent implements OnInit {
         }
       }
     });
+  }
 
+  toggleMenu() {
+    this.isMenuActive = !this.isMenuActive
   }
 
   @ViewChild('webglSceneWrapper')
@@ -126,7 +132,7 @@ export class SnnWebglSceneComponent implements OnInit {
       let postConnections = this.neuronData.connectionsMap[i];
       for (var postIndex of postConnections) {
         // create tube line
-        var lineMaterial = new THREE.LineBasicMaterial({ color: 'rgb(207, 207, 207)' });
+        var lineMaterial = new THREE.LineBasicMaterial({ color: 'rgb(224, 224, 224)' });
         let startVector = neurons[i].position
         let endVector = neurons[postIndex].position
         let linePoints = [];
@@ -142,6 +148,7 @@ export class SnnWebglSceneComponent implements OnInit {
         );
 
         let line = new THREE.Line(tubeGeometry, lineMaterial);
+        line.name = `line-[${i},${postIndex}]`
         this.scene.add(line);
       }
     }
@@ -167,11 +174,23 @@ export class SnnWebglSceneComponent implements OnInit {
         case LIFNeuronState.FIRING:
           outlineMaterial.color.set('rgb(242, 31, 91)')
           material.color.set('rgb(255, 168, 170)')
+          this.updateConnectionState(i, true)
           break;
         default:
           outlineMaterial.color.set('rgb(43, 202, 255)')
           material.color.set('rgb(191, 239, 255)')
+          this.updateConnectionState(i)
           break;
+      }
+    }
+  }
+
+  updateConnectionState(neuronIndex: number, isFiring: boolean = false) {
+    for (let postIndex of this.neuronData.connectionsMap[neuronIndex]) {
+      let line = this.scene.getObjectByName(`line-[${neuronIndex},${postIndex}]`) as THREE.Line
+      if (line) {
+        const material = line.material as THREE.LineBasicMaterial
+        material.color.set(isFiring ? 'rgb(242, 31, 91)' : 'rgb(224, 224, 224)')
       }
     }
   }
