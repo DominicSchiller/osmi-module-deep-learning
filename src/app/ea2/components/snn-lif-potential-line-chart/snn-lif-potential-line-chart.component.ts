@@ -39,7 +39,7 @@ export class SNNLIFPotentialLineChartComponent implements OnInit {
   /**
    * The chart's margin
    */
-  private margin = { top: 12, right: 24, bottom: 24, left: 36 };
+  private margin = { top: 12, right: 24, bottom: 48, left: 48 };
 
   /**
    * The current D3 SVG instance
@@ -117,7 +117,7 @@ export class SNNLIFPotentialLineChartComponent implements OnInit {
     this.svg.append("text")
       .attr("class", "y label")
       .attr("text-anchor", "end")
-      .attr("y", 12)
+      .attr("y", -44)
       .attr("dy", ".5em")
       .attr("transform", "rotate(-90)")
       .text("Potential (mV)");
@@ -126,7 +126,7 @@ export class SNNLIFPotentialLineChartComponent implements OnInit {
       .attr("class", "x label")
       .attr("text-anchor", "end")
       .attr("x", contentWidth)
-      .attr("y", contentHeight - 12)
+      .attr("y", contentHeight +40)
       .text("Time (seconds)");
    }
  
