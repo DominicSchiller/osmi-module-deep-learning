@@ -35,6 +35,13 @@ export class SnnWebglSceneComponent implements OnInit {
         }
       }
     });
+
+    lifSimulationService.selectedNeuronIndex.subscribe(selectedNeuronIndex => {
+      this.selectedNeuronIndex = selectedNeuronIndex
+      if (this.neurons.length > 0) {
+        this.updateNeuronsState()
+      }
+    })
   }
 
   toggleMenu() {
@@ -50,6 +57,7 @@ export class SnnWebglSceneComponent implements OnInit {
 
   neurons: THREE.Mesh[] = [];
   neuronData: LIFNeuronData
+  selectedNeuronIndex: number = 0
 
   ngOnInit() {}
 
@@ -161,6 +169,7 @@ export class SnnWebglSceneComponent implements OnInit {
 
   clearScene() {
     this.webGLScaneWrapper.nativeElement.removeChild(this.renderer.domElement);
+    this.renderer.renderLists.dispose()
   }
 
   updateNeuronsState() {
@@ -176,11 +185,23 @@ export class SnnWebglSceneComponent implements OnInit {
           material.color.set('rgb(255, 168, 170)')
           this.updateConnectionState(i, true)
           break;
+        case LIFNeuronState.RESTING:
+          outlineMaterial.color.set('rgb(168, 168, 168)')
+          material.color.set('rgb(226, 226, 226)')
+          this.updateConnectionState(i)
+          break;
         default:
           outlineMaterial.color.set('rgb(43, 202, 255)')
           material.color.set('rgb(191, 239, 255)')
           this.updateConnectionState(i)
           break;
+      }
+
+      if (i == this.selectedNeuronIndex) {
+        outline.scale.set(1.6, 1.6, 1.6)
+        outlineMaterial.color.set('rgb(172, 38, 255)')
+      } else {
+        outline.scale.set(1.25, 1.25, 1.25)
       }
     }
   }
@@ -190,7 +211,7 @@ export class SnnWebglSceneComponent implements OnInit {
       let line = this.scene.getObjectByName(`line-[${neuronIndex},${postIndex}]`) as THREE.Line
       if (line) {
         const material = line.material as THREE.LineBasicMaterial
-        material.color.set(isFiring ? 'rgb(242, 31, 91)' : 'rgb(224, 224, 224)')
+        material.color.set(isFiring ? 'rgb(255, 180, 5)' : 'rgb(226, 226, 226)')
       }
     }
   }
@@ -225,6 +246,12 @@ export class SnnWebglSceneComponent implements OnInit {
       // outlineMesh.position.set(mesh.position.x, mesh.position.y, mesh.position.z);
       // outlineMesh.scale.multiplyScalar(1.25); // default: 1.05
       // this.scene.add( outlineMesh );
+
+      if (mesh.name.includes("sphere-")) {
+        let index: number = +mesh.name.replace("sphere-", "")
+        this.lifSimulationService.setSelectedNeuronIndex(index);
+      }
+
     });
 
     return mesh;

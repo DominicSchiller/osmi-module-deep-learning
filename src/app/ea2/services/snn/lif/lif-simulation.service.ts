@@ -26,6 +26,8 @@ export class LIFSimulationService {
   public readonly networkingGrade = new BehaviorSubject<number>(this.model.networkingGrade); 
 
   public readonly neuronData = new BehaviorSubject<LIFNeuronData>(null)
+  public readonly animationSpeed = new BehaviorSubject<number>(this.model.animationSpeed)
+  public readonly selectedNeuronIndex = new BehaviorSubject<number>(this.model.selectedNeuronIndex)
 
   public setNNeuron(value: number) {
     this.model.nNeuron = +value;
@@ -79,6 +81,18 @@ export class LIFSimulationService {
     this.model.networkingGrade = +value
     this.networkingGrade.next(+value);
     this.postModelUpdate();
+  }
+
+  public setAnimationSpeed(value: number) {
+    this.model.animationSpeed = +value;
+    this.animationSpeed.next(+value);
+    this.postModelUpdate()
+  }
+
+  public setSelectedNeuronIndex(value: number) {
+    this.model.selectedNeuronIndex = +value;
+    this.selectedNeuronIndex.next(+value);
+    this.postModelUpdate()
   }
 
   // Simulation Results

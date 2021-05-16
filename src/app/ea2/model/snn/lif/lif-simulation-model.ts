@@ -32,6 +32,11 @@ export class LIFSimulationModel {
     public dt: number = 1;
 
     public animationSpeed: number = 500;
+
+    /**
+     * Index of the selected neuron for which to display the input current and potential information.
+     */
+    public selectedNeuronIndex: number = 0 
 }
 
 export class LIFNeuronData {

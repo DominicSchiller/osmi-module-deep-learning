@@ -44,6 +44,8 @@ export class LIFSynapticNeuronSimulator {
         this.model.tauRest = otherModel.tauRest
         this.model.f = otherModel.f
         this.model.networkingGrade = otherModel.networkingGrade
+        this.model.animationSpeed = otherModel.animationSpeed
+        this.model.selectedNeuronIndex = otherModel.selectedNeuronIndex
     }
 
     private initVariables() {
@@ -190,9 +192,9 @@ export class LIFSynapticNeuronSimulator {
         postMessage(new LIFSimulationWorkerEvent(
             LIFSimulationCommand.POTENTIAL_UPDATE,
             new LIFSimulationDataUpdate(
-                this.model.neuronData.neurons[0].uThresh, 
-                this.model.U[0].slice((this.model.U[0].length - 100), this.model.U[0].length), 
-                this.model.I[0].slice((this.model.I[0].length - 100), this.model.I[0].length), 
+                this.model.neuronData.neurons[this.model.selectedNeuronIndex].uThresh, 
+                this.model.U[this.model.selectedNeuronIndex].slice((this.model.U[this.model.selectedNeuronIndex].length - 100), this.model.U[this.model.selectedNeuronIndex].length), 
+                this.model.I[this.model.selectedNeuronIndex].slice((this.model.I[this.model.selectedNeuronIndex].length - 100), this.model.I[this.model.selectedNeuronIndex].length), 
                 this.model.neuronSpikes.slice((this.model.neuronSpikes.length - 100), this.model.neuronSpikes.length)
         )))
     }
