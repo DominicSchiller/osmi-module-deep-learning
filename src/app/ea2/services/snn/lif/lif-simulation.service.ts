@@ -5,6 +5,7 @@ import { LIFNeuronData, LIFSimulationModel } from 'src/app/ea2/model/snn/lif/lif
 import { LIFSimulationCommand, LIFSimulationWorkerEvent } from 'src/app/ea2/model/snn/lif/lif-simulation-commands';
 import { LIFSynapticNeuron } from 'src/app/ea2/model/snn/lif/neurons/lif-synaptic-neuron';
 import { InputCurrent, LIFSimulationDataUpdate } from 'src/app/ea2/model/snn/snn-types';
+import { LIFSImulatorState } from 'src/app/ea2/model/snn/lif/simulator/lif-simulator-state';
 
 @Injectable({
   providedIn: 'root'
@@ -93,6 +94,8 @@ export class LIFSimulationService {
   }
 
   private worker: Worker = null;
+  public isStarted: boolean = false
+  public isPaused: boolean = false
 
   // Simulation Working Variables
 
@@ -120,23 +123,33 @@ export class LIFSimulationService {
       };
       this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.SET_MODEL, this.model));
       this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.START));
+      this.isStarted = true;
     }
   }
 
-  public async stopSImulation() {
-
+  public async stopSimulation() {
+    this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.STOP));
+    this.isStarted = false;
   }
+
+  public async pauseSimulation() {
+    this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.PAUSE));
+    this.isPaused = true;
+  }
+
+  public async resumeSimulation() {
+    this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.RESUME));
+    this.isPaused = false;
+  }
+
+  public async restarteSimulation() {
+    this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.STOP));
+    this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.START));
+    this.isStarted = true;
+  }
+
 
   private async postModelUpdate() {
     this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.SET_MODEL, this.model));
   }
-
-  
-
-  private parseLIFNeuronResponseUpdate(update?: LIFSimulationDataUpdate) {
-    if (update) {
-      this._lifNeuronResponseUpdate.next(update)
-    }
-  }
-
 }

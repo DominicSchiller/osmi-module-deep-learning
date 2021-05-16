@@ -1,5 +1,7 @@
 export enum LIFSimulationCommand {
     START,
+    PAUSE,
+    RESUME,
     STOP,
     SET_MODEL,
     NEURON_DATA_UPDATE,

@@ -31,7 +31,7 @@ export class LIFSimulationModel {
     // duration of each time step in ms
     public dt: number = 1;
 
-    public animationSpeed: number = 250;
+    public animationSpeed: number = 500;
 }
 
 export class LIFNeuronData {

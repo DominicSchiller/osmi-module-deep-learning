@@ -2,22 +2,76 @@
     height: 100%;    
     height: 100%;
 
+    #simulation-info-section {
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 3rem;
+        color: rgb(176, 176, 176);
+    }
+
     #options-button {
         position: absolute;
         top: 24px;
         left: 24px;
+
+        ion-fab-button {
+            --background: white;
+            --color: black;
+        }
     }
+
+    #start-button {
+        position: absolute;
+        top: 24px;
+        left: 100px;
+
+        ion-fab-button {
+            --background: rgb(167, 222, 40);
+        }
+    }
+
+    #pause-button, #resume-button {
+        position: absolute;
+        top: 24px;
+        left: 100px;
+
+        ion-fab-button {
+            --background: white;
+            --color: black;
+        }
+    }
+
+    #stop-button {
+        position: absolute;
+        top: 24px;
+        left: 176px;
+
+        // ion-fab-button {
+        //     --background: white;
+        //     --color: black;
+        // }
+    }
+    
+
     #simulation-options-section {
-        height: 200px;
+        display: flex column;
+        height: auto;
         width: 30vw;
         position: absolute;
         top: 50px;
         opacity: 0;
         transition: all 0.25s ease-in-out;
+        border: 1px solid rgb(220, 220, 220);
+        border-radius: 12px;
+        overflow: hidden;
 
         &.active {
             opacity: 1;
-            top: 88px;
+            top: 112px;
         }
 
         ion-range::part(pin) {
@@ -45,7 +99,7 @@
             ion-item {
                 // flex: 1;
                 // width: 100%;
-                width: 15vw;
+                width: 50%;
                 
                 &.full-width {
                     width: 100%;

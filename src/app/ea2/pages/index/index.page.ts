@@ -22,6 +22,6 @@ export class IndexPage implements OnInit {
   }
 
   async ngAfterViewInit() {
-    this.lifSimulationService.startSimulation()
+    // this.lifSimulationService.startSimulation()
   }
 }

@@ -22,7 +22,14 @@ addEventListener('message', ({ data }) => {
         simulator.setModel(model);
         break;
     case LIFSimulationCommand.START:
-        simulator.simulate();
+        simulator.startSimulation()
+        break;
+    case LIFSimulationCommand.STOP:
+    case LIFSimulationCommand.PAUSE:
+        simulator.stopSimulation()
+        break;
+    case LIFSimulationCommand.RESUME:
+        simulator.resumeSimulation()
         break;
     default:
         break;

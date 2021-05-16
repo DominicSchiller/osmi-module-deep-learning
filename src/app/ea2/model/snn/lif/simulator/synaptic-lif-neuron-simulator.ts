@@ -11,6 +11,7 @@ export class LIFSynapticNeuronSimulator {
     private model: LIFSimulationModel = null
     public window: DedicatedWorkerGlobalScope
     public simulationIntervalID: any
+    t = 0 // current time step
 
     public setModel(newModel: LIFSimulationModel) {
         if (!this.model) {
@@ -46,6 +47,7 @@ export class LIFSynapticNeuronSimulator {
     }
 
     private initVariables() {
+        this.t = 0;
         this.model.I = []
         this.model.U = []
         this.createNeurons()  
@@ -99,23 +101,40 @@ export class LIFSynapticNeuronSimulator {
         }
     }
 
-    async simulate() {
+    public async startSimulation() {
         var start = new Date().getTime();
-        console.log("Start Simulation ...");
-
+        console.log("Start Simulation");
         this.initVariables()
+        this.simulate()
+    }
 
-        var t = 0 // current time step
+    public async resumeSimulation() {
+        console.log("Resume Simulation");
+        this.simulate()
+    }
+
+    public stopSimulation() {
+        // @ts-ignore
+        this.window.clearInterval(this.simulationIntervalID);
+        console.log("Simulation stopped");
+        var end = new Date().getTime();
+        // console.info(`time needed: ${(end - start)/1000}s`)
+    }
+
+    private async simulate() {
+        
         this.simulationIntervalID = setInterval(() => {
             var neuronSpikes = 0;
+            const tSeconds: number = (this.t * this.model.animationSpeed)/1000
+            
             for (var n=0; n<this.model.nNeuron; n++) {
 
                 let neuron = this.model.neuronData.neurons[n]
 
-                if (t > 10 && t < 180) {
+                if (this.t > 5) {
                     const r = tf.randomUniform([this.model.nSyn], 0, 1)
                     const hasSpiked = r.less(tf.fill([this.model.nSyn], this.model.f * this.model.dt * 1e-3))
-                    this.model.synHasSpiked[n][t] = hasSpiked
+                    this.model.synHasSpiked[n][this.t] = hasSpiked
                 }
     
                 // verify neuron has spiked (state == FIRING) in order to send weighted current to connected post-neurones
@@ -137,7 +156,7 @@ export class LIFSynapticNeuronSimulator {
                 // feed neuron with new data
                 // this.model.neuronData.neurons[n].iApp.assign(tf.scalar(tf.randomUniform([1], 0, 0.5).dataSync()[0]))
                 neuron.iApp.assign(tf.add(neuron.iApp, tf.scalar(0.0))); // extra input
-                neuron.synHasSpiked.assign(this.model.synHasSpiked[n][t]);
+                neuron.synHasSpiked.assign(this.model.synHasSpiked[n][this.t]);
                 neuron.dt.assign(tf.scalar(this.model.dt));
     
                 // calculate results
@@ -145,26 +164,19 @@ export class LIFSynapticNeuronSimulator {
                 const u = result.uOp.dataSync()[0];
                 const tRest = result.tRestOp.dataSync()[0];
     
-                this.model.I[n].push( new LIFNeuronCurrent(t, neuron.iApp.dataSync()[0]));
-                this.model.U[n].push( new LIFNeuronPotential(t, u, tRest));
+                
+                this.model.I[n].push( new LIFNeuronCurrent(tSeconds, neuron.iApp.dataSync()[0]));
+                this.model.U[n].push( new LIFNeuronPotential(tSeconds, u, tRest));
             }
 
             // update counted spikes
-            this.model.neuronSpikes.push(new LIFNeuronSpikes(t, neuronSpikes));
-            neuronSpikes
+            this.model.neuronSpikes.push(new LIFNeuronSpikes(tSeconds, neuronSpikes));
 
             // this.model.postNeuronSpikesUpdate()
             this.postNeuronPotentialUpdate()
             this.postNeuronsUpdate()
             
-            t++;
-            if (t >= this.model.T) {
-                // @ts-ignore
-                this.window.clearInterval(this.simulationIntervalID);
-                console.log("Simulation finished");
-                var end = new Date().getTime();
-                console.info(`time needed: ${(end - start)/1000}s`)
-            }
+            this.t++;
         }, this.model.animationSpeed)
 
         // console.info("Last spike Idx: ", this.model.neurons[0].tSpikesIdx.dataSync()[0]);
@@ -177,8 +189,12 @@ export class LIFSynapticNeuronSimulator {
     protected postNeuronPotentialUpdate() {
         postMessage(new LIFSimulationWorkerEvent(
             LIFSimulationCommand.POTENTIAL_UPDATE,
-            new LIFSimulationDataUpdate(this.model.neuronData.neurons[0].uThresh, this.model.U[0], this.model.I[0], this.model.neuronSpikes)
-        ))
+            new LIFSimulationDataUpdate(
+                this.model.neuronData.neurons[0].uThresh, 
+                this.model.U[0].slice((this.model.U[0].length - 100), this.model.U[0].length), 
+                this.model.I[0].slice((this.model.I[0].length - 100), this.model.I[0].length), 
+                this.model.neuronSpikes.slice((this.model.neuronSpikes.length - 100), this.model.neuronSpikes.length)
+        )))
     }
 
     protected postNeuronCurrentUpdate() {

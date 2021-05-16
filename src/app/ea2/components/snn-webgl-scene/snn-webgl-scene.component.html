@@ -1,7 +1,32 @@
 <div #webglSceneWrapper id="webgl-scene-wrapper">
+
+    <div id="simulation-info-section" *ngIf="neurons.length === 0">
+        Please press the »play« button in order to start the simulation.
+    </div>
+
     <ion-fab vertical="top" horizontal="start" slot="fixed" id="options-button">
         <ion-fab-button (click)="toggleMenu()">
             <ion-icon name="options"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-fab vertical="top" horizontal="start" slot="fixed" id="start-button" *ngIf="!lifSimulationService.isStarted">
+        <ion-fab-button (click)="lifSimulationService.startSimulation()">
+            <ion-icon name="play"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-fab vertical="top" horizontal="start" slot="fixed" id="pause-button" *ngIf="lifSimulationService.isStarted && !lifSimulationService.isPaused">
+        <ion-fab-button (click)="lifSimulationService.pauseSimulation()">
+            <ion-icon name="pause"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-fab vertical="top" horizontal="start" slot="fixed" id="resume-button" *ngIf="lifSimulationService.isStarted && lifSimulationService.isPaused">
+        <ion-fab-button (click)="lifSimulationService.resumeSimulation()">
+            <ion-icon name="play"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-fab vertical="top" horizontal="start" slot="fixed" id="stop-button" color="primary" *ngIf="lifSimulationService.isStarted">
+        <ion-fab-button (click)="lifSimulationService.stopSimulation()">
+            <ion-icon name="stop"></ion-icon>
         </ion-fab-button>
     </ion-fab>
 

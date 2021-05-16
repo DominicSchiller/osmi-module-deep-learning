@@ -9,10 +9,14 @@ import { LIFNeuronSpikes, LIFSimulationDataUpdate } from '../../model/snn/snn-ty
 })
 export class SNNLIFNeuronSpikesChartComponent implements OnInit {
 
+  private isLoaded: boolean = false
   private _data: LIFSimulationDataUpdate = null
 
   @Input('data')
   public set dataIn(val) {
+    if (this.isLoaded && !this._data) {
+      this.createChart()
+    }
     this._data = val;
     if (this.chartContainer) {
       this.updateChart();
@@ -67,8 +71,11 @@ export class SNNLIFNeuronSpikesChartComponent implements OnInit {
 
   ngAfterViewInit() {
    setTimeout(() => {
-    this.createChart()
-    this.updateChart()
+    this.isLoaded = true;
+    if (this._data) {
+      this.createChart()
+      this.updateChart()
+    }
    }, 250)
   }
  
@@ -120,7 +127,7 @@ export class SNNLIFNeuronSpikesChartComponent implements OnInit {
        .attr("text-anchor", "end")
        .attr("x", contentWidth)
        .attr("y", contentHeight - 12)
-       .text("Time (ms)");
+       .text("Time (seconds)");
    }
  
    /**
@@ -132,7 +139,7 @@ export class SNNLIFNeuronSpikesChartComponent implements OnInit {
     //  console.log("will update scatter chart");
      const duration = 0
      // Create the X axis:
-     this.x.domain([0, d3.max(this._data.neuronSpikes, d => d.t)]);
+     this.x.domain([d3.min(this._data.potentials, d => d.t), d3.max(this._data.neuronSpikes, d => d.t)]);
      this.svg.selectAll(".myXaxis").transition()
        .duration(duration)
        .call(this.xAxis);
