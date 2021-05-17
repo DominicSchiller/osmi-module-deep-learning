@@ -44,6 +44,10 @@ export class LIFNeuron {
 
     public state: LIFNeuronState = LIFNeuronState.UNKNOWN
 
+    wInputCurrent: tf.Variable
+
+    inputCurrent: tf.Variable
+
     /**
      * Create a new LIF Neuron
      * @param uRest 
@@ -115,6 +119,10 @@ export class LIFNeuron {
      * Neuron behaviour during resting phase (t_rest > 0)
      */
     public getRestingOp() {
+        this.iApp.assign(tf.scalar(0.0))
+        this.inputCurrent.assign(tf.scalar(0.0))
+        this.wInputCurrent.assign(tf.scalar(0.0))
+
         // Membrane potential stays at u_rest
         this.u.assign(tf.scalar(this.uRest))
         // Refractory period is decreased by dt

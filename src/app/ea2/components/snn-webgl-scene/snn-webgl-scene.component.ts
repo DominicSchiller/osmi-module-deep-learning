@@ -173,6 +173,7 @@ export class SnnWebglSceneComponent implements OnInit {
   }
 
   updateNeuronsState() {
+    var notificationPlayed: boolean = false
     for (var i=0; i<this.neuronData.neurons.length; i++) {
       let neuron = this.neurons[i]
       let rawNeuron = this.neuronData.neurons[i]
@@ -189,6 +190,13 @@ export class SnnWebglSceneComponent implements OnInit {
           outlineMaterial.color.set('rgb(168, 168, 168)')
           material.color.set('rgb(226, 226, 226)')
           this.updateConnectionState(i)
+
+          if (!notificationPlayed) {
+            notificationPlayed = true
+            var audio = new Audio('assets/sounds/ea2/spike.wav')
+            audio.play()
+          }
+
           break;
         default:
           outlineMaterial.color.set('rgb(43, 202, 255)')

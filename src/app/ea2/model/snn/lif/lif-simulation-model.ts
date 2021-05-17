@@ -5,14 +5,14 @@ import { InputCurrent, LIFNeuronCurrent, LIFNeuronPotential, LIFNeuronSpikes } f
 
 export class LIFSimulationModel {
     public nNeuron: number = 25;
-    public nSyn: number = 25;
+    public nSyn: number = 50;
     public uRest: number = 0.0;
     public uThresh: number = 1.0;
     public tauRest: number = 4.0;
     public tau: number = 10.0;
     public r: number = 1.0;
     public f: number = 20;
-    public networkingGrade: number = 7;
+    public networkingGrade: number = 10;
 
     public neuronData: LIFNeuronData = new LIFNeuronData();
     
@@ -31,7 +31,7 @@ export class LIFSimulationModel {
     // duration of each time step in ms
     public dt: number = 1;
 
-    public animationSpeed: number = 500;
+    public animationSpeed: number = 1000;
 
     /**
      * Index of the selected neuron for which to display the input current and potential information.

@@ -23,7 +23,7 @@ export class LIFSynapticNeuronSimulator {
                     // console.warn("Restarting simulation due to neuron core property updates ...");
                     this.window.clearInterval(this.simulationIntervalID);
                     this.model = newModel;
-                    this.simulate()
+                    // this.simulate()
             } else {
                 this.mergeModel(newModel)
                 this.updateNeurons()
@@ -91,7 +91,7 @@ export class LIFSynapticNeuronSimulator {
         }
 
         // init neuron connection weights
-        const randomGamma = tf.randomGamma([this.model.nNeuron, this.model.nNeuron], 2, 0.003) // 0.003
+        const randomGamma = tf.randomGamma([this.model.nNeuron, this.model.nNeuron], 2, 0.05) // 0.003
         this.model.neuronData.W = randomGamma.arraySync() as number[][]
 
         this.postNeuronsUpdate(true)
@@ -123,41 +123,57 @@ export class LIFSynapticNeuronSimulator {
         // console.info(`time needed: ${(end - start)/1000}s`)
     }
 
+    calculateWInputCurrents() {
+        var neuronSpikes = 0;
+        for (var n=0; n<this.model.nNeuron; n++) {
+            let neuron = this.model.neuronData.neurons[n]
+            // verify neuron has spiked (state == FIRING) in order to send weighted current to connected post-neurones
+            var spikedCurrent: number = 0.0
+            if (neuron.state === +(LIFNeuronState.FIRING)) {
+                neuronSpikes++;
+                const neuronCurrent = neuron.inputCurrent.dataSync()[0] as number
+                for (let postNeuronIndex of this.model.neuronData.connectionsMap[n]) {
+                    let postNeuron = this.model.neuronData.neurons[postNeuronIndex]
+                    const weight = this.model.neuronData.W[n][postNeuronIndex]
+                    const weightedCurrent = weight * neuronCurrent
+                    postNeuron.wInputCurrent.assign(tf.scalar(weightedCurrent))
+                }
+            }
+        }
+        return neuronSpikes
+    }
+
     private async simulate() {
         
         this.simulationIntervalID = setInterval(() => {
-            var neuronSpikes = 0;
-            const tSeconds: number = (this.t * this.model.animationSpeed)/1000
+            var neuronSpikes = this.calculateWInputCurrents()
+            // const tSeconds: number = (this.t * this.model.animationSpeed)/1000
+            const tSeconds = this.t
             
             for (var n=0; n<this.model.nNeuron; n++) {
 
                 let neuron = this.model.neuronData.neurons[n]
 
-                if (this.t > 5) {
+                if (this.t > 0) {
                     const r = tf.randomUniform([this.model.nSyn], 0, 1)
-                    const hasSpiked = r.less(tf.fill([this.model.nSyn], this.model.f * this.model.dt * 1e-3))
-                    this.model.synHasSpiked[n][this.t] = hasSpiked
+
+                    if (neuron.wInputCurrent.dataSync()[0] > 0) {
+                        const hasSpiked = tf.fill([this.model.nSyn], 1, 'bool')
+                        this.model.synHasSpiked[n][this.t] = hasSpiked
+                    } else {
+                        const hasSpiked = r.less(tf.fill([this.model.nSyn], this.model.f * this.model.dt * 1e-3))
+                        this.model.synHasSpiked[n][this.t] = hasSpiked
+                    }                    
                 }
     
-                // verify neuron has spiked (state == FIRING) in order to send weighted current to connected post-neurones
-                var spikedCurrent: number = 0.0
-                if (neuron.state === +(LIFNeuronState.FIRING)) {
-                    neuronSpikes++;
-                    const neuronCurrent = neuron.iApp.dataSync()[0] as number
-
-                    for (let postNeuronIndex of this.model.neuronData.connectionsMap[n]) {
-                        let postNeuron = this.model.neuronData.neurons[postNeuronIndex]
-                        if (postNeuron.state !== LIFNeuronState.FIRING && postNeuron.state !== LIFNeuronState.RESTING) {
-                            const weight = this.model.neuronData.W[n][postNeuronIndex]
-                            const weightedCurrent = weight * neuronCurrent
-                            postNeuron.iApp.assign(tf.scalar(weightedCurrent))
-                        }
-                    }
-                }
+                
 
                 // feed neuron with new data
                 // this.model.neuronData.neurons[n].iApp.assign(tf.scalar(tf.randomUniform([1], 0, 0.5).dataSync()[0]))
-                neuron.iApp.assign(tf.add(neuron.iApp, tf.scalar(0.0))); // extra input
+
+                // neuron.iApp.assign(tf.scalar(0.0))
+                // neuron.iApp.assign(tf.add(neuron.iApp, tf.scalar(0.0))); // extra input
+                neuron.iApp.assign(tf.scalar(0.0))
                 neuron.synHasSpiked.assign(this.model.synHasSpiked[n][this.t]);
                 neuron.dt.assign(tf.scalar(this.model.dt));
     
@@ -165,7 +181,6 @@ export class LIFSynapticNeuronSimulator {
                 const result = neuron.getPotentialOp();
                 const u = result.uOp.dataSync()[0];
                 const tRest = result.tRestOp.dataSync()[0];
-    
                 
                 this.model.I[n].push( new LIFNeuronCurrent(tSeconds, neuron.iApp.dataSync()[0]));
                 this.model.U[n].push( new LIFNeuronPotential(tSeconds, u, tRest));
@@ -193,9 +208,9 @@ export class LIFSynapticNeuronSimulator {
             LIFSimulationCommand.POTENTIAL_UPDATE,
             new LIFSimulationDataUpdate(
                 this.model.neuronData.neurons[this.model.selectedNeuronIndex].uThresh, 
-                this.model.U[this.model.selectedNeuronIndex].slice((this.model.U[this.model.selectedNeuronIndex].length - 100), this.model.U[this.model.selectedNeuronIndex].length), 
-                this.model.I[this.model.selectedNeuronIndex].slice((this.model.I[this.model.selectedNeuronIndex].length - 100), this.model.I[this.model.selectedNeuronIndex].length), 
-                this.model.neuronSpikes.slice((this.model.neuronSpikes.length - 100), this.model.neuronSpikes.length)
+                this.model.U[this.model.selectedNeuronIndex].slice((this.model.U[this.model.selectedNeuronIndex].length - 50), this.model.U[this.model.selectedNeuronIndex].length), 
+                this.model.I[this.model.selectedNeuronIndex].slice((this.model.I[this.model.selectedNeuronIndex].length - 50), this.model.I[this.model.selectedNeuronIndex].length), 
+                this.model.neuronSpikes.slice((this.model.neuronSpikes.length - 50), this.model.neuronSpikes.length)
         )))
     }
 

@@ -87,6 +87,9 @@ export class LIFSimulationService {
     this.model.animationSpeed = +value;
     this.animationSpeed.next(+value);
     this.postModelUpdate()
+    this.pauseSimulation()
+    this.resumeSimulation()
+
   }
 
   public setSelectedNeuronIndex(value: number) {
@@ -142,28 +145,28 @@ export class LIFSimulationService {
   }
 
   public async stopSimulation() {
-    this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.STOP));
+    this.worker?.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.STOP));
     this.isStarted = false;
   }
 
   public async pauseSimulation() {
-    this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.PAUSE));
+    this.worker?.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.PAUSE));
     this.isPaused = true;
   }
 
   public async resumeSimulation() {
-    this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.RESUME));
+    this.worker?.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.RESUME));
     this.isPaused = false;
   }
 
   public async restarteSimulation() {
-    this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.STOP));
-    this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.START));
+    this.worker?.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.STOP));
+    this.worker?.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.START));
     this.isStarted = true;
   }
 
 
   private async postModelUpdate() {
-    this.worker.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.SET_MODEL, this.model));
+    this.worker?.postMessage(new LIFSimulationWorkerEvent(LIFSimulationCommand.SET_MODEL, this.model));
   }
 }

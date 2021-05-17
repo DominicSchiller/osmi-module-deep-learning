@@ -127,7 +127,7 @@ export class SNNLIFCurrentLineChartComponent implements OnInit {
        .attr("text-anchor", "end")
        .attr("x", contentWidth)
        .attr("y", contentHeight + 40)
-       .text("Time (seconds)");
+       .text("Time (dt=1)");
    }
  
    /**

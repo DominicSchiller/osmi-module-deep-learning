@@ -33,28 +33,28 @@
     <div id="simulation-options-section" [ngClass]="{'active': isMenuActive}">
         <div class="group">
             <ion-item cass="full-width">
-                <ion-range min="1" max="100" step="1" mode="ios" pin="true" snaps="true" ticks="false"
+                <ion-range min="1" max="100" step="1" mode="ios" pin="true" ticks="false" [disabled]="lifSimulationService.isStarted"
                 [value]="lifSimulationService.nNeuron | async" 
                 (ionChange)="lifSimulationService.setNNeuron($event.target.value)">
                     <ion-label slot="start">n<sub>Neurones</sub></ion-label>
                 </ion-range>
             </ion-item>
             <ion-item cass="full-width">
-                <ion-range min="1" max="100" step="1" mode="ios" pin="true" snaps="true" ticks="false"
+                <ion-range min="1" max="100" step="1" mode="ios" pin="true" ticks="false"  [disabled]="lifSimulationService.isStarted"
                 [value]="lifSimulationService.nSyn | async" 
                 (ionChange)="lifSimulationService.setNSyn($event.target.value)">
                     <ion-label slot="start">n<sub>Synapses</sub></ion-label>
                 </ion-range>
             </ion-item>
             <ion-item cass="full-width">
-                <ion-range min="1" max="100" step="1" mode="ios" pin="true" snaps="true" ticks="false" unit="%"
+                <ion-range min="1" max="100" step="1" mode="ios" pin="true" ticks="false" unit="%"  [disabled]="lifSimulationService.isStarted"
                 [value]="lifSimulationService.networkingGrade | async" 
                 (ionChange)="lifSimulationService.setNetworkingGrade($event.target.value)">
-                    <ion-label slot="start">net<sub>degree</sub></ion-label>
+                    <ion-label slot="start">connections</ion-label>
                 </ion-range>
             </ion-item>
             <ion-item cass="full-width">
-                <ion-range min="1" max="100" step="1" mode="ios" pin="true" snaps="true" ticks="false" unit="ohm"
+                <ion-range min="1" max="100" step="1" mode="ios" pin="true" ticks="false" unit="ohm"
                 [value]="lifSimulationService.r | async" 
                 (ionChange)="lifSimulationService.setR($event.target.value)">
                     <ion-label slot="start">r</ion-label>
@@ -63,14 +63,14 @@
         </div>
         <div class="group">
             <ion-item cass="full-width">
-                <ion-range min="0" max="8" step="1" mode="ios" pin="true" snaps="true" ticks="false" unit="mv"
+                <ion-range min="0" max="8" step="1" mode="ios" pin="true" ticks="false" unit="mv"
                 [value]="lifSimulationService.uRest | async" 
                 (ionChange)="lifSimulationService.setURest($event.target.value)">
                     <ion-label slot="start">u<sub>Rest</sub></ion-label>
                 </ion-range>
             </ion-item>
             <ion-item cass="full-width">
-                <ion-range min="0" max="10" step="1" mode="ios" pin="true" snaps="true" ticks="false" unit="mv"
+                <ion-range min="0" max="10" step="1" mode="ios" pin="true" ticks="false" unit="mv"
                 [value]="lifSimulationService.uThresh | async" 
                 (ionChange)="lifSimulationService.setUThresh($event.target.value)">
                     <ion-label slot="start">u<sub>Thresh</sub></ion-label>
@@ -79,20 +79,28 @@
         </div>
         <div class="group">
             <ion-item cass="full-width">
-                <ion-range min="1" max="100" step="1" mode="ios" pin="true" snaps="true" ticks="false" unit="ms"
+                <ion-range min="1" max="100" step="1" mode="ios" pin="true" ticks="false" unit="ms"
                 [value]="lifSimulationService.tau | async" 
                 (ionChange)="lifSimulationService.setTau($event.target.value)">
                     <ion-label slot="start">&tau;</ion-label>
                 </ion-range>
             </ion-item>
             <ion-item cass="full-width">
-                <ion-range min="1" max="100" step="1" mode="ios" pin="true" snaps="true" ticks="false" unit="ms"
+                <ion-range min="1" max="100" step="1" mode="ios" pin="true" ticks="false" unit="ms"
                 [value]="lifSimulationService.tauRest | async" 
                 (ionChange)="lifSimulationService.setTauRest($event.target.value)">
                     <ion-label slot="start">&tau;<sub>Rest</sub></ion-label>
                 </ion-range>
             </ion-item>
         </div>
+        <div class="group">
+            <ion-item cass="full-width">
+                <ion-range min="250" max="5000" step="50" mode="ios" pin="true" ticks="false" unit="ms"
+                [value]="lifSimulationService.animationSpeed | async" 
+                (ionChange)="lifSimulationService.setAnimationSpeed($event.target.value)">
+                    <ion-label slot="start">animation speed</ion-label>
+                </ion-range>
+            </ion-item>
        <!-- <div class="group">
             <ion-item>
                 <ion-label>n<sub>Neurones</sub></ion-label>

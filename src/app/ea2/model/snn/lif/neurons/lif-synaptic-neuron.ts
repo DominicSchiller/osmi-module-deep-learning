@@ -59,6 +59,8 @@ export class LIFSynapticNeuron extends LIFNeuron {
         this.maxSpikes = maxSpikes,
         this.q = q
         this.tauSyn = tauSyn
+        this.wInputCurrent = tf.variable(tf.scalar(0.0))
+        this.inputCurrent =  tf.variable(tf.scalar(0.0))
     }
 
     public initVariablesAndPlaceholders() {
@@ -129,8 +131,8 @@ export class LIFSynapticNeuron extends LIFNeuron {
 
         // add each synaptic current to the input current
         const iOp = this.w.mul(iSynOp).sum()
-
-        this.iApp.assign(tf.add(this.iApp, iOp)) // TODO: direkt assignen ?? 
+        this.iApp.assign(tf.add(this.iApp, iOp).add(this.wInputCurrent))
+        this.inputCurrent.assign(this.iApp)
         return this.iApp
     }
 
